@@ -1,0 +1,65 @@
+Basic Player Information:
+
+Player– Player's name
+Nation – Player's nationality
+Pos – Position (FW, MF, DF, GK)
+Squad – Club name
+Comp – League
+Age – Age of the player
+Born – Year of birth
+Playing Time & Appearances
+
+MP – Matches played
+Starts – Games started
+Min – Minutes played
+90s – Number of full 90-minute matches played
+Attacking Stats
+
+Gls – Goals scored
+Ast – Assists provided
+G+A – Goals + Assists
+xG – Expected goals
+xAG – Expected assists
+npxG – Non-penalty expected goals
+G-PK – Goals excluding penalties
+Defensive Stats
+
+Tkl – Total tackles
+TklW – Tackles won
+Blocks – Blocks made
+Int – Interceptions
+Tkl+Int – Combined tackles and interceptions
+Clr – Clearances
+Err – Errors leading to goals
+Passing & Creativity Stats
+
+PrgP – Progressive passes
+PrgC – Progressive carries
+KP – Key passes (passes leading to a shot)
+Cmp%_stats_passing – Pass completion percentage
+Ast_stats_passing – Assists
+xA – Expected assists
+PPA – Passes into the penalty area
+Goalkeeping Stats
+
+GA – Goals conceded
+Saves – Saves made
+Save% – Save percentage
+CS – Clean sheets
+CS% – Clean sheet percentage
+PKA – Penalties faced
+PKsv – Penalty saves
+Possession & Ball Control
+
+Touches – Total touches of the ball
+Carries – Total ball carries
+PrgR – Progressive runs (carries moving the ball forward significantly)
+Mis – Miscontrols
+Dis – Times dispossessed
+Miscellaneous Stats
+
+CrdY – Yellow cards
+CrdR – Red cards
+PKwon – Penalties won
+PKcon – Penalties conceded
+Recov – Ball recoveries
