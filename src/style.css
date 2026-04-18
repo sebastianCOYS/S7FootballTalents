@@ -1,0 +1,10 @@
+:root {
+    line-height: 1.5;
+} 
+* {
+    font-family: "roboto", arial, sans-serif;
+}
+a {
+    color: white;
+}
+

@@ -1,0 +1,77 @@
+* {
+    box-sizing: border-box;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-template-areas: "name name name"
+                        "squad pos nation"
+                        "mp gls ast"
+                        "comp comp comp";
+    border-radius: 20px;
+    border: 15px solid rgb(15, 15, 15);
+
+
+}
+.item {
+    background-color: rgb(15, 15, 15);
+    color: white;
+    padding: 20px;
+    border: solid 1px rgb(28, 28, 28);
+}
+.item > .label {
+    font-weight: bold;
+    color: rgb(160, 160, 160);
+}
+.item.name {
+    grid-area: name;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+.item.birthyear {
+    grid-area: birthyear;
+}
+.item.nation {
+    grid-area: nation;
+}
+.item.pos {
+    grid-area: pos;
+}
+.item.squad {
+    grid-area: squad;
+}
+.item.mp {
+    grid-area: mp;
+}
+.item.gls {
+    grid-area: gls;
+}
+.item.ast {
+    grid-area: ast;
+}
+.item.comp {
+    grid-area: comp;
+}
+.item.full_width {
+    grid-column: 1 / -1;
+    text-align: center;
+}
+
+#link {
+    padding: 20px;
+    margin: 10px;
+    background-color: rgb(30, 30, 30);
+    border: 2px solid rgb(28, 28, 28);
+    border-radius: 10px;
+}
+.advanced_stats_container {
+    display: grid;
+    margin-top: 20px;
+    grid-template-columns: auto auto auto auto auto auto auto;
+    border-radius: 20px;
+    border: 15px solid rgb(15, 15, 15);
+}
+.advanced_stats_container.goalkeeper {
+    grid-template-columns: auto auto auto auto !important;
+}
