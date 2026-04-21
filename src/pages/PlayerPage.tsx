@@ -233,6 +233,11 @@ export default function PlayerPage() {
         </> 
         )
     } else {
-        return (<Paper>no player found......</Paper>);
+        return (<>
+        <Header navItems={[{itemName: "S7FT", link: "/"}]}></Header>
+        <Paper>no player found......</Paper>
+
+        </>
+    );
     }
 }

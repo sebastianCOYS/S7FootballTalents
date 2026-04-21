@@ -434,7 +434,10 @@ export default function PlayerComparisonPage() {
         );
     } else {
         return (
-            <Paper>no player found......</Paper>
+            <>  
+                <Header navItems={[{ itemName: "S7FT", link: "/" }]}></Header>
+                <Paper>no players found......</Paper>
+            </>
         );
     }
 }

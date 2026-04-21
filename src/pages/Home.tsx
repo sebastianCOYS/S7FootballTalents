@@ -9,9 +9,9 @@ export default function Home() {
         <>
         <Header navItems={[{itemName: "S7FT", link: "/"}]}></Header>
         <Typography sx={{width: "100%", textAlign: "center"}} variant="h1">S7 Football Talents</Typography>
-        <Button sx={{width: "100%", p: 3, m:1}} variant="outlined" component={Link} to={"/custom_search"}><Typography sx={{ color: "text.primary", backgroundColor: "background.paper" }}>Custom Search</Typography></Button> <br />
-        <Button sx={{width: "100%", p: 3, m:1}} variant="outlined" component={Link} to={"/name_search"}><Typography sx={{ color: "text.primary", backgroundColor: "background.paper" }}>Search by name</Typography></Button> <br />
-        <Button sx={{width: "100%", p: 3, m:1}} variant="outlined" component={Link} to={"/compare_players"}><Typography sx={{ color: "text.primary", backgroundColor: "background.paper" }}>Compare Players</Typography></Button> <br />
+        <Button sx={{width: "100%", p: 3, m:1}} variant="outlined" component={Link} to={"/custom_search"}><Typography sx={{ color: "text.primary" }}>Custom Search</Typography></Button> <br />
+        <Button sx={{width: "100%", p: 3, m:1}} variant="outlined" component={Link} to={"/name_search"}><Typography sx={{ color: "text.primary" }}>Search by name</Typography></Button> <br />
+        <Button sx={{width: "100%", p: 3, m:1}} variant="outlined" component={Link} to={"/compare_players"}><Typography sx={{ color: "text.primary" }}>Compare Players</Typography></Button> <br />
         </>
     )
 }       ;
