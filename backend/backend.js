@@ -30,12 +30,7 @@ const AiLimiter = rateLimit({
   }
 })
 //because of cors allow origin problem (Adds headers: Access-Control-Allow-Origin: *)
-app.use(cors({
-  origin: process.env.FRONTEND_URL,
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+app.use(cors({origin: process.env.FRONTEND_URL}));
 //root route (tells us what shows up in the root of the site)
 //just some info about the API
 app.get('/', (req, res) => {
@@ -53,14 +48,9 @@ app.get('/', (req, res) => {
 //middleware to handle errors
 app.use(errorHandler);
 //limiters
-app.use('/s7api/ai', AiLimiter );
+app.use('/ai', AiLimiter );
 //defininng new 
-app.use('/s7api/players', playerRoutes);
-app.use('/s7api/search', customSearchRoutes );
-app.use('/s7api/ai', ai );
-
-// Get port from environment or default to 3000
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`S7 Football Talents API running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
-}); 
+app.use('/players', playerRoutes);
+app.use('/search', customSearchRoutes );
+app.use('/ai', ai );
+app.listen(3000); 
