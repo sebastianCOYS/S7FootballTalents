@@ -86,10 +86,19 @@ export default function PlayerList() {
             </TableRow>
            )}
         </TableBody>
+                <TableBody>
+                  <TableRow>
+                    <TableCell colSpan={4} sx={{width: "100%"}}>
+                      <Box sx={{display: "flex", flexDirection: "row", width: "100%", justifyContent: "space-between"}}>
+                        <Button sx={{alignSelf: "left"}} disabled={!hasPreviousPage} onClick={handlePreviousPage}>previous page</Button>
+                        <Button sx={{alignSelf: "right"}}  disabled={!hasNextPage} onClick={handleNextPage}>next page</Button>
+                      </Box>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+        
       </Table>
     </TableContainer>
-    <Button disabled={!hasPreviousPage} onClick={handlePreviousPage}>previous page</Button>
-    <Button disabled={!hasNextPage} onClick={handleNextPage}>next page</Button>
         </>
     )
-};
+}

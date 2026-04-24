@@ -1,12 +1,13 @@
 import Header from "../components/Header.tsx"
 import PlayerListSearchName from "../components/PlayerListSearchName.tsx";
-import Typography from "@mui/material/Typography";
-
+import Title from "../components/Title.tsx";
+import Subtitle from "../components/Subtitle.tsx";
 export default function NameSearch() {
     return (
         <>
         <Header navItems={[{itemName: "S7FT", link: "/"}]}></Header>
-        <Typography variant="h1">Search with Name</Typography>
+        <Title>Search with Name</Title>
+        <Subtitle>Search for any footballer and get his statistics</Subtitle>
         <PlayerListSearchName />
         </>
     )

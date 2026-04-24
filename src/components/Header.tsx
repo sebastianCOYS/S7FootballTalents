@@ -1,5 +1,4 @@
 import {Link} from "react-router";
-import React from "react";
 import { useState } from "react";
 import { useContext } from "react";
 //design
@@ -29,8 +28,8 @@ const colorMode = useContext(ColorModeContext);
 const pages = ['compare_players', 'name_search', 'custom_search'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
