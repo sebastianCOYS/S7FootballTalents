@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import usePlayers from '../hooks/usePlayers';
 import type {Player} from '../hooks/usePlayers';
 //mui table
@@ -16,7 +16,6 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 //Router
 import { Link } from 'react-router';
-import PlayerComparisonPage from '../pages/PlayerComparisonPage';
 
 
 export default function ComparePlayers() {
@@ -60,7 +59,7 @@ export default function ComparePlayers() {
       setQueryParamsX({player: inputNameX, offset: offsetForHookX-10})
       }
 
-      function handlepreviousPageY() {
+      function handlePreviousPageY() {
         setOffsetForHookY(offsetForHookY-10);
       setQueryParamsY({player: inputNameY, offset: offsetForHookY-10})
       }
@@ -136,19 +135,29 @@ export default function ComparePlayers() {
             </TableRow>
            )}
         </TableBody>
-        <Button disabled={!hasPreviousPageX} onClick={handlePreviousPageX}>previous page</Button>
-        <Button disabled={!hasNextPageX} onClick={handleNextPageX}>next page</Button>
+        <TableBody>
+          <TableRow>
+            <TableCell colSpan={3} sx={{width: "100%"}}>
+              <Box sx={{display: "flex", flexDirection: "row", width: "100%", justifyContent: "space-between"}}>
+                <Button sx={{alignSelf: "left"}} disabled={!hasPreviousPageX} onClick={handlePreviousPageX}>previous page</Button>
+                <Button sx={{alignSelf: "right"}}  disabled={!hasNextPageX} onClick={handleNextPageX}>next page</Button>
+              </Box>
+            </TableCell>
+          </TableRow>
+        </TableBody>
+        
       </Table>
-        <Box sx={{padding: "10px"}}>
-           <Typography sx={{marginBottom: "10px"}} variant={"h6"}>{selectedPlayerXName}</Typography>
-           <Divider></Divider>
-           <Typography variant={"h6"}>{selectedPlayerYName}</Typography>
-           {
-           selectedPlayerXRk !== null && selectedPlayerYRk !== null &&
-           <Button color='warning' component={Link} to={"/playerComparisonPage/"+selectedPlayerXRk+"/"+selectedPlayerYRk}>Compare Players</Button>
-           }
-        </Box>
-          <Table sx={{ minWidth: 150 }} aria-label="simple table">
+
+      <Box sx={{padding: "10px"}}>
+          <Typography sx={{marginBottom: "10px"}} variant={"h6"}>{selectedPlayerXName}</Typography>
+          <Divider></Divider>
+          <Typography variant={"h6"}>{selectedPlayerYName}</Typography>
+          {
+          selectedPlayerXRk !== null && selectedPlayerYRk !== null &&
+          <Button color='warning' component={Link} to={"/playerComparisonPage/"+selectedPlayerXRk+"/"+selectedPlayerYRk}>Compare Players</Button>
+          }
+      </Box>
+      <Table sx={{ minWidth: 150 }} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell>Player</TableCell>
@@ -177,9 +186,16 @@ export default function ComparePlayers() {
             </TableRow>
            )}
         </TableBody>
-    <Button disabled={!hasPreviousPageY} onClick={handlepreviousPageY}>previous page</Button>
-    <Button disabled={!hasNextPageY} onClick={handleNextPageY}>next page</Button>
-
+        <TableBody>
+          <TableRow>
+            <TableCell colSpan={3} sx={{width: "100%"}}>
+              <Box sx={{display: "flex", flexDirection: "row", width: "100%", justifyContent: "space-between"}}>
+                <Button sx={{alignSelf: "left"}} disabled={!hasPreviousPageY} onClick={handlePreviousPageY}>previous page</Button>
+                <Button sx={{alignSelf: "right"}}  disabled={!hasNextPageY} onClick={handleNextPageY}>next page</Button>
+              </Box>
+            </TableCell>
+          </TableRow>
+        </TableBody>
       </Table>
 
     </TableContainer>

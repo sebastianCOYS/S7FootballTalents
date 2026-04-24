@@ -12,7 +12,7 @@ import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
-import { Chip } from '@mui/material';
+import {Box} from '@mui/material';
 //Router
 import { Link } from 'react-router';
 
@@ -65,13 +65,16 @@ export default function PlayerList() {
             
           {players.map((player) => (
           
-              <TableRow  key={player.Rk} to={"/player/"+player.Rk} component={Link}>
-                <TableCell component="th" scope="row">
-                  {player.Player}
-                </TableCell>
-                <TableCell align="right">{player.Age}</TableCell>
-                <TableCell align="right">{player.Squad}</TableCell>
-                <TableCell align="right">{player.Rk}</TableCell>
+              <TableRow key={player.Rk}>
+                
+                  <TableCell component="th" scope="row" sx={{padding: 0}}>
+                    <Box component={Link} to={"/player/"+player.Rk} sx={{padding: 2, display: "block", width: "100%", height: "inherit"}}>
+                      {player.Player}
+                    </Box>
+                  </TableCell>
+                  <TableCell align="right">{player.Age}</TableCell>
+                  <TableCell align="right">{player.Squad}</TableCell>
+                  <TableCell align="right">{player.Rk}</TableCell>
               </TableRow>
 
           ))}
