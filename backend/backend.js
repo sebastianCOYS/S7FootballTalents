@@ -24,7 +24,7 @@ const AiLimiter = rateLimit({
     data: {
       nickname: "unknown",
       rating: "unknown",
-      summary: "you have reached your per/minute request limit, try again later.",
+      summary: "You have reached your request limit, try again later.",
       apiLimitReached: true,
     }
   }
@@ -45,12 +45,12 @@ app.get('/', (req, res) => {
     });
 })
 
-//middleware to handle errors
-app.use(errorHandler);
-//limiters
-app.use('/ai', AiLimiter );
 //defininng new 
 app.use('/players', playerRoutes);
 app.use('/search', customSearchRoutes );
+app.use('/ai', AiLimiter );
 app.use('/ai', ai );
-app.listen(3000); 
+//middleware to handle errors
+app.use(errorHandler);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT); 

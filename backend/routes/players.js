@@ -4,7 +4,7 @@ const router = express.Router();
 
 //no need for "/players" here, it's already mounted in backend.js
 //GET ALL player information by rk (GET player profile info)
-router.get('/rk/:rk', async (req,res) => {
+router.get('/rk/:rk', async (req,res,next) => {
     try {
     const {rk} = req.params;
     const [rows] = await pool.execute("select * from players_24_25 where rk = ?", [rk]);

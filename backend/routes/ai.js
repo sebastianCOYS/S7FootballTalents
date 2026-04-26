@@ -6,7 +6,7 @@
     apiKey: process.env.GEMINI_API_KEY,
   });
 
-  router.post("/", async (req, res) => {
+  router.post("/", async (req, res, next) => {
     
     try {
       const response = await ai.models.generateContent({
@@ -14,9 +14,10 @@
         contents:
           `You are a strict data generator. RULES: Do NOT include introductions. Do NOT say "here is", "here\'s", "sure", "of course", or similar phrases, Tasks: 1. Give him a creative, fitting nickname. 2. Give him an overall rating out of 99. 3. Write a 40 to 50 word scouting summary. Be imaginative and poetic about his playstyle rather than just listing statistics. CRITICAL FORMATTING INSTRUCTION: Respond ONLY with a valid JSON object containing exactly these keys: 'nickname', 'rating', and 'summary'. Return the JSON as a raw string. Do NOT wrap the output in markdown code blocks, backticks, or the word 'json'. footballer: ${req.body.player.Player} , position:  ${req.body.player.Pos}, Team:  ${req.body.player.Squad}, Age:  ${req.body.player.Age}, Goals:  ${req.body.player.Gls}, Assists:  ${req.body.player.Ast}, Minutes played:  ${req.body.player.Min}, Matches played: ${req.body.player.MP},   expected Goals(xG):  ${req.body.player.xG}, expected assists(xA):  ${req.body.player.xA}, Errors leading to a goals: ${req.body.player.Err}, ball recoveries: ${req.body.player.Recov} Tackles attempted:  ${req.body.player.Tkl}, successful Tackles:  ${req.body.player.TklW}, Blocks:  ${req.body.player.Blocks}, Interceptions:  ${req.body.player.Int}, Clearances:  ${req.body.player.Clr}, Progressive passes: ${req.body.player.PrgP}, Progressive Dribbles: ${req.body.player.PrgC}, Yellow Cards: ${req.body.player.CrdY}, Red Cards: ${req.body.player.CrdR}  `,
       });
-        const parsedAiResponse = JSON.parse(response.text.replace(/```json|```/g, "").trim());
 
-      res.json({ 
+      try {
+        const parsedAiResponse = JSON.parse(response.text.replace(/```json|```/g, "").trim());
+          res.json({ 
         success: true,
         data: {
         nickname: parsedAiResponse.nickname || "unknown",
@@ -26,6 +27,18 @@
         }
         
       });
+      } catch {
+          res.json({ 
+        success: true,
+        data: {
+        nickname: "unknown",
+        rating: "unknown",
+        summary: "unknown",
+        apiLimitReached: false,
+        }
+       
+      });
+      }
     } catch (error) {
       next(error);
     }

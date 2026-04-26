@@ -8,14 +8,15 @@ import NameSearch from "./pages/NameSearch.tsx"
 import ComparePlayers from "./pages/ComparePlayers.tsx"
 import PlayerComparisonPage from './pages/PlayerComparisonPage.tsx'
 import { createBrowserRouter, RouterProvider } from 'react-router'
-import { Container, Box, CssBaseline } from '@mui/material';
+import { Box, CssBaseline } from '@mui/material';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
 import "./style.css";
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-
 const router = createBrowserRouter([
   {path:"/", element:<Home/>},
   {path:"/home", element:<Home/>},
@@ -32,13 +33,25 @@ const router = createBrowserRouter([
 export const ColorModeContext = createContext({toggleColorMode: () => {}});
 
 function App() {
-  const [mode, setMode] = useState<'light' | 'dark'>('dark');
+    const [mode, setMode] = useState<"light" | "dark">(() => {
+    const savedMode = localStorage.getItem("themeMode");
+
+    if (savedMode === "light" || savedMode === "dark") {
+      return savedMode;
+    }
+
+    return "dark";
+  });;
 
   const colorMode = useMemo(() => ({
-      toggleColorMode: () => {
-        setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
-      },
-    }), []);
+    toggleColorMode: () => {
+      setMode((prevMode) => {
+        const nextMode = prevMode === "light" ? "dark" : "light";
+        localStorage.setItem("themeMode", nextMode);
+        return nextMode;
+      });
+    },
+  }), []);
 
     const theme = useMemo(() => createTheme({
       palette: {
@@ -53,9 +66,7 @@ return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Box sx={{bgcolor: "background.default", color: "text.primary", minHeight: "100vh", width: "100%"}}>
-        <Container maxWidth="xl">
           <RouterProvider router={router}/>
-        </Container>
       </Box>
     </ThemeProvider>
   </ColorModeContext.Provider>

@@ -15,18 +15,16 @@ import { ColorModeContext } from "../main";
 import { useTheme } from "@mui/material/styles";
 
 type NavItem = {
-    itemName: string;
+    page: string;
     link: string;
 }
 type HeaderProps = {
     navItems: NavItem[];
 }
-export default function Header({ navItems }: HeaderProps) {
+export default function Header({ navItems } : HeaderProps) {
     //type
 const theme = useTheme();
 const colorMode = useContext(ColorModeContext);
-const pages = ['compare_players', 'name_search', 'custom_search'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
@@ -47,17 +45,15 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
     setAnchorElUser(null);
   };
 //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-    navItems ? "" : "";
        return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{mb: "20px"}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Link to={"/"}>
             S7FT
           </Link>
           
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ flexGrow: 1, md: 'none', display: "flex", justifyContent: "center"}}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -83,8 +79,8 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
               onClose={handleCloseNavMenu}
               sx={{ display: { xs: 'block', md: 'none' } }}
             >
-              {pages.map((page) => (              
-                <MenuItem key={page} onClick={handleCloseNavMenu} component={Link} to={"/"}>
+              {navItems.map(({page, link}) => (              
+                <MenuItem key={page} onClick={handleCloseNavMenu} component={Link} to={link}>
                   <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
                 </MenuItem>
 
@@ -110,13 +106,13 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
             S7FT
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
+            {navItems.map(({page, link}) => (
               <Button
                 component={Link}
                 key={page}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'text.primary', display: 'block' }}
-                to={`/${page}`}
+                to={link}
               >
                 {page}
               </Button>
