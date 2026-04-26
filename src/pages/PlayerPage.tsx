@@ -78,13 +78,6 @@ export default function PlayerPage() {
         strokeWidth={1}
         seriesId={playerRk}
         />
-        <RadarSeriesArea
-        fill="transparent"
-        strokeWidth={1}
-        seriesId="usa-id"
-        strokeDasharray="4, 4"
-        strokeLinecap="round"
-        />
         <RadarAxisHighlight />
         <RadarSeriesMarks />
     </ChartsSurface>

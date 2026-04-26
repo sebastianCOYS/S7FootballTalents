@@ -45,11 +45,12 @@ app.get('/', (req, res) => {
     });
 })
 
+const API_BASE = process.env.API_BASE || "";
 //defininng new 
-app.use('/players', playerRoutes);
-app.use('/search', customSearchRoutes );
-app.use('/ai', AiLimiter );
-app.use('/ai', ai );
+app.use(API_BASE+'/players', playerRoutes);
+app.use(API_BASE+'/search', customSearchRoutes );
+app.use(API_BASE+'/ai', AiLimiter );
+app.use(API_BASE+'/ai', ai );
 //middleware to handle errors
 app.use(errorHandler);
 const PORT = process.env.PORT || 3000;
