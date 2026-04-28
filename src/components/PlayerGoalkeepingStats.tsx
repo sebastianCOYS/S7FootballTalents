@@ -7,7 +7,7 @@ export default function PlayerGoalkeepingStats(player: playerCompleteType) {
      return (
     <Paper sx={{padding: 2}} variant={"outlined"} className="advanced_stats_container goalkeeping">
             <Paper variant="outlined" className="item full_width">
-                <Typography variant="h2"  sx={{textAlign: "left"}} >Goalkeeping</Typography>
+                <Typography variant="h3"  sx={{textAlign: "left"}} >Goalkeeping</Typography>
             </Paper>
             <Paper className="item">
                 <Typography color="textSecondary" className="label">Goals Conceded</Typography>

@@ -10,8 +10,9 @@ const app = express();
 const helmet = require("helmet");
 const dotenv = require("dotenv");
 const rateLimit = require("express-rate-limit");
-
 dotenv.config();
+
+const API_BASE = process.env.API_BASE || "";
 //extra security
 app.use(helmet());
 app.use(express.json());
@@ -33,19 +34,17 @@ const AiLimiter = rateLimit({
 app.use(cors({origin: process.env.FRONTEND_URL}));
 //root route (tells us what shows up in the root of the site)
 //just some info about the API
-app.get('/', (req, res) => {
+app.get(API_BASE+'/', (req, res) => {
     res.status(200).json({
       message: "s7footballtalents api",
       version: 0.1,
       endpoints: {
         "/players/rk/:rk" : "GET player info by rk",
-        "/players/name/:name" : "GET players by name search (partial names allowed)",
-        "/search?age=20&mp=100&gls=10" : "Custom search with many parameters, all optional"
+        "/search?mp=2&gls=1&ast=0" : "Custom search with many parameters, all optional"
       }
-    });
+    }); 
 })
 
-const API_BASE = process.env.API_BASE || "";
 //defininng new 
 app.use(API_BASE+'/players', playerRoutes);
 app.use(API_BASE+'/search', customSearchRoutes );

@@ -6,7 +6,7 @@ export default function PlayerDefensiveStats(player: playerCompleteType) {
   return (
     <>
     <Paper className="item full_width">
-                <Typography variant="h2"  sx={{textAlign: "left"}} >Defensive statistics</Typography>
+                <Typography variant="h3"  sx={{textAlign: "left"}} >Defensive statistics</Typography>
             </Paper>
             <Paper variant="outlined" className="item">
                 <Typography color="textSecondary" className="label">Tackes Won</Typography>

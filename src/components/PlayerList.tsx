@@ -40,20 +40,20 @@ export default function PlayerList() {
     return (
         <>
         <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "10px", marginBottom: "10px", padding: "10px"}}>
-          <form  onSubmit={handleSubmit}>
-              <TextField
-                label="Goals"
-                variant="filled"
-                value={inputGoals}
-                onChange={(e) => setInputGoals(Number(e.target.value))}
-              />
-              <TextField
-                label="Assists"
-                variant="filled"
-                value={inputAssists}
-                onChange={(e) => setInputAssists(Number(e.target.value))}
-              />
-              <Button  type="submit" variant="contained"> Search</Button>
+          <form onSubmit={handleSubmit}>
+            <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "10px", marginBottom: "10px", padding: "10px"}} spacing={2}>
+                <TextField
+                  label="Goals"
+                  value={inputGoals}
+                  onChange={(e) => setInputGoals(Number(e.target.value))}
+                />
+                <TextField
+                  label="Assists"
+                  value={inputAssists}
+                  onChange={(e) => setInputAssists(Number(e.target.value))}
+                />
+                <Button  type="submit" variant="contained"> Search</Button>
+              </Stack>
           </form>
         </Stack>
 

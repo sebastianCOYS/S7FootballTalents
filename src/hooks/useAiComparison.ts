@@ -4,6 +4,10 @@ import { useState } from "react";
 export default function useAiComparison(playerX: playerCompleteType | null, playerY: playerCompleteType | null) {
     const [summary, setSummary] = useState<string | null>(null);
     const [apiLimitReached, setApiLimitReached] = useState<boolean>(false);
+    const [nicknameX, setNicknameX] = useState<string | null>(null);
+    const [nicknameY, setNicknameY] = useState<string | null>(null);
+    const [ratingX, setRatingX] = useState<string | null>(null);
+    const [ratingY, setRatingY] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     async function generateAiPlayerComparison() {
@@ -17,6 +21,11 @@ export default function useAiComparison(playerX: playerCompleteType | null, play
             const response = await promptBackendAiComparison(playerX, playerY);
             setApiLimitReached(response.data.apiLimitReached);
             setSummary(response.data.summary);
+            setNicknameX(response.data.nicknameX);
+            setNicknameY(response.data.nicknameY);
+            setRatingX(response.data.ratingX);
+            setRatingY(response.data.ratingY);
+             setSummary(response.data.summary);
             if (response.data.apiLimitReached === true) {
                 setTimeout(() => {
                 setApiLimitReached(false);
@@ -30,5 +39,5 @@ export default function useAiComparison(playerX: playerCompleteType | null, play
         }
 
     }
-    return {summary, apiLimitReached, isLoading, error, generateAiPlayerComparison};
+    return {summary, nicknameX, nicknameY, ratingX, ratingY, apiLimitReached, isLoading, error, generateAiPlayerComparison};
 }

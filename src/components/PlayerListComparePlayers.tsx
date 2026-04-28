@@ -81,7 +81,6 @@ export default function ComparePlayers() {
                           <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "10px", marginBottom: "10px", padding: "10px"}} spacing={2}>
                             <TextField
                               label="Name of player X"
-                              variant="filled"
                               value={inputNameX}
                               onChange={(e) => setInputNameX(e.target.value)}
                             />
@@ -95,7 +94,6 @@ export default function ComparePlayers() {
                           <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "10px", marginBottom: "10px", padding: "10px"}} spacing={2}>
                             <TextField
                               label="Name of player Y"
-                              variant="filled"
                               value={inputNameY}
                               onChange={(e) => setInputNameY(e.target.value)}
                             />

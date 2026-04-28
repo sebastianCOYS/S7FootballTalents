@@ -42,7 +42,6 @@ export default function PlayerList() {
           <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "10px", marginBottom: "10px", padding: "10px"}} spacing={2}>
             <TextField
               label="Player Name"
-              variant="filled"
               value={inputName}
               onChange={(e) => setInputName(e.target.value)}
             />
@@ -68,7 +67,7 @@ export default function PlayerList() {
               <TableRow key={player.Rk}>
                 
                   <TableCell component="th" scope="row" sx={{padding: 0}}>
-                    <Box component={Link} to={"/player/"+player.Rk} sx={{padding: 2, display: "block", width: "100%", height: "inherit"}}>
+                    <Box component={Link} to={"/player/"+player.Rk} sx={{padding: 2, display: "block", width: "100%", height: "inherit", color: "text.primary"}}>
                       {player.Player}
                     </Box>
                   </TableCell>

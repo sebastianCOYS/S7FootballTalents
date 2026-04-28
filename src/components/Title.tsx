@@ -5,6 +5,6 @@ type TitleProps = {
 }
 export default function Title({children} : TitleProps) {
 return (
-        <Typography variant="h1">{children}</Typography>
+        <Typography  className="title" variant="h1">{children}</Typography>
     )
 };

@@ -11,8 +11,8 @@ export default function PlayerGeneralStats({player, rating, nickname} : PlayerGe
   return (
         <Paper sx={{padding: 2}} variant={"outlined"} className="container">
         <Paper variant="outlined" className="item name">
-            <Typography variant="h1">{player.Player}</Typography>
-            <Box  sx={{display: "flex", flexDirection: "row", alignItems: "center", gap:1, m: 2}}>
+            <Typography variant="h3">{player.Player}</Typography>
+            <Box  sx={{display: "flex", flexDirection: "row", alignItems: "center", gap:1, m: 2, flexWrap: "wrap"}}>
                 <Typography variant="h6">AI nickname:</Typography>
                 <Chip color="warning" variant="outlined" label={nickname ? nickname : "AI nickname"} />
                 <Typography variant="h6">AI rating:</Typography>

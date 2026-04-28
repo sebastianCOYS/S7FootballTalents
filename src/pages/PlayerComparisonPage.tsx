@@ -13,6 +13,8 @@ import PlayerGoalkeepingStats from "../components/PlayerGoalkeepingStats";
 import {Alert} from "@mui/material";
 import {CircularProgress} from "@mui/material";
 import Footer from "../components/Footer";
+import {Stack} from "@mui/material";
+import "./styles/compare.css"; 
  const navItems = [
         {page: "Search by name", link: "/name_search"},
         {page: "advanced Search", link: "/custom_search"},
@@ -24,7 +26,7 @@ export default function PlayerComparisonPage() {
 
     const { player: playerX, error: errorX, isLoading: isLoadingX } = usePlayer(Number(playerXRk));
     const { player: playerY, error: errorY, isLoading: isLoadingY } = usePlayer(Number(playerYRk));
-    const {summary, apiLimitReached, isLoading: isLoadingAi, error: errorAi, generateAiPlayerComparison} = useAiComparison(playerX, playerY);
+    const {summary, nicknameX, nicknameY, ratingX, ratingY, apiLimitReached, isLoading: isLoadingAi, error: errorAi, generateAiPlayerComparison} = useAiComparison(playerX, playerY);
     if (isLoadingX || isLoadingY) return <><Header navItems={navItems}/><Box sx={{display: "flex", alignItems: "center", justifyContent: "center", width:"100vw", height: "100vh"}}><CircularProgress size={80}/></Box></>;
     if (errorX || errorY) return <><Header navItems={navItems}/><Alert severity="error">Something went wrong</Alert></>;
     if (playerX === null || playerY === null) return <><Header navItems={navItems}/><Alert severity="error">No player found...</Alert></>;
@@ -39,24 +41,35 @@ export default function PlayerComparisonPage() {
                         <Typography sx={{minHeight: "100px"}}>{summary ? summary : errorAi}</Typography>
                     </Paper>
                 </Paper>
+                <Stack sx={{display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
                 <RadarChart height={300}
                 series={[
-                    { label: playerX.Player, data: [playerX.Gls, playerX.Ast, playerX.PrgP, playerX.PrgC, playerX.xG, playerX.xAG] },
-                    {label: playerY.Player, data: [playerY.Gls, playerY.Ast, playerY.PrgP, playerY.PrgC, playerY.xG, playerY.xAG] },
+                    { label: playerX.Player, data: [playerX.Gls, playerX["G-PK"], playerX.Ast, playerX.xG, playerX.npxG, playerX.xAG, playerX["G+A"], playerX.Carries,  playerX.PrgP, playerX.PrgC], fillArea:true },
+                    {label: playerY.Player, data: [playerY.Gls, playerY["G-PK"], playerY.Ast, playerY.xG, playerY.npxG, playerY.xAG, playerY["G+A"], playerY.Carries,  playerY.PrgP, playerY.PrgC], fillArea:true },
                 ]}
-                radar={{metrics: ['goals', 'assists', 'progressive passes', 'progressive carries', 'xG', 'xAG', 'goals - xG']}}
-                />        
+                radar={{metrics: ['Goals', 'Goals-PK', 'Assists', 'xG','npxG', 'xAG', 'G+A', 'Carries', 'Progressive p.', 'Progressive c.','key passes']}}
+                
+                />    
+                <RadarChart height={300}
+                series={[
+                    { label: playerX.Player, data: [playerX.TklW, playerX.Int, playerX.Clr, playerX.Recov, playerX.CrdY, playerX.CrdR], fillArea:true },
+                    {label: playerY.Player, data: [playerY.TklW, playerY.Int, playerY.Clr, playerY.Recov, playerY.CrdY, playerY.CrdR], fillArea:true },
+                ]}
+                radar={{metrics: ['Tackles Won', 'Interceptions', 'Clearances', 'Recoveries', 'Yellow C.', 'Red C.']}}
+                
+                /> 
+                </Stack>    
                 <Box sx={{ display: "flex", flexDirection: "row", gap: 2, padding: 2 }}>
 
                     <Box sx={{ width: "50%" }}>
-                        <PlayerGeneralStats player={playerX}/>
+                        <PlayerGeneralStats player={playerX} rating={ratingX} nickname={nicknameX}/>
                         <PlayerGoalkeepingStats {...playerX}/>
                         <PlayerOffensiveStats {...playerX}/>
                         <PlayerDefensiveStats {...playerX}/>
                     </Box>
       
                     <Box sx={{ width: "50%" }}>
-                        <PlayerGeneralStats player={playerY}/>
+                        <PlayerGeneralStats player={playerY} rating={ratingY} nickname={nicknameY}/>
                         <PlayerGoalkeepingStats {...playerY}/>
                         <PlayerOffensiveStats {...playerY}/>
                         <PlayerDefensiveStats {...playerY}/>   

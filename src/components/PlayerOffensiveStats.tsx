@@ -5,7 +5,7 @@ export default function PlayerOffensiveStats(player: playerCompleteType) {
   return (
     <Paper sx={{padding: 2}} variant={"outlined"} className="advanced_stats_container">
             <Paper variant="outlined" className="item full_width">
-                <Typography variant="h2"  sx={{textAlign: "left"}} >Offensive statistics</Typography>
+                <Typography variant="h3"  sx={{textAlign: "left"}} >Offensive statistics</Typography>
             </Paper>
             <Paper className="item">
                 <Typography color="textSecondary">xg + xa</Typography>

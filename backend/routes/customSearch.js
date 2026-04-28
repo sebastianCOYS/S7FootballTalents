@@ -88,7 +88,7 @@ router.get('/' , async (req, res, next) => {
             success: true,
             data: {
                 players: [],
-                hasNextPage: false,
+                hasNextP    : false,
                 hasPreviousPage: false,
                 message: "No players found",
 

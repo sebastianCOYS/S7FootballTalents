@@ -111,7 +111,7 @@ const colorMode = useContext(ColorModeContext);
                 component={Link}
                 key={page}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'text.primary', display: 'block' }}
+                sx={{ my: 2,color: 'white', margin: 1, display: 'block' }}
                 to={link}
               >
                 {page}
