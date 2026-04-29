@@ -49,9 +49,9 @@ const colorMode = useContext(ColorModeContext);
     <AppBar position="static" sx={{mb: "20px"}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Link to={"/"}>
+          <MenuItem component={Link} to={"/"} sx={{textDecoration: "none", borderRadius: "4px"}}>
             S7FT
-          </Link>
+          </MenuItem>
           
           <Box sx={{ flexGrow: 1, md: 'none', display: "flex", justifyContent: "center"}}>
             <IconButton
@@ -96,10 +96,7 @@ const colorMode = useContext(ColorModeContext);
               mr: 2,
               display: { xs: 'flex', md: 'none' },
               flexGrow: 1,
-              fontFamily: 'monospace',
               fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
               textDecoration: 'none',
             }}
           >
