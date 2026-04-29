@@ -5,7 +5,6 @@ import Header from "../components/Header";
 import {Paper} from "@mui/material";
 import useAi from "../hooks/useAi";
 import {Button} from "@mui/material";
-import {Chip} from "@mui/material";
 import {Box} from "@mui/material";
 import Stack from '@mui/material/Stack';
 import PlayerOffensiveStats from "../components/PlayerOffensiveStats";
@@ -15,7 +14,7 @@ import {Alert} from "@mui/material";
 import {Container} from "@mui/material";
 import PlayerGeneralStats from "../components/PlayerGeneralStats";
 import Footer from "../components/Footer";
-import { RadarChart } from '@mui/x-charts/RadarChart';
+import PlayerRadarChart from "../components/PlayerRadarChart";
  const navItems = [
         {page: "Search by name", link: "/name_search"},
         {page: "advanced Search", link: "/custom_search"},
@@ -39,26 +38,15 @@ export default function PlayerPage() {
     <Paper sx={{p: 2}}>
         <Typography sx={{minHeight: "100px"}}>{summary ? summary : errorAi}</Typography>
     </Paper>
+    <Stack sx={{display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
+            <PlayerRadarChart player={player} chartType="offensive"/>
+            <PlayerRadarChart player={player} chartType="defensive"/>
+            {player.Pos === "GK" && <PlayerRadarChart player={player} chartType="goalkeeping"/>}
+    </Stack>
     <PlayerGeneralStats player={player} rating={rating} nickname={nickname}/>
-    <PlayerGoalkeepingStats {...player}/>
+    { player.Pos === "GK" && <PlayerGoalkeepingStats {...player}/> }
     <PlayerOffensiveStats {...player}/>
     <PlayerDefensiveStats {...player}/>
-    <Stack sx={{display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
-        <RadarChart height={300}
-                series={[
-                    { label: player.Player, data: [player.Gls, player["G-PK"], player.Ast, player.xG, player.npxG, player.xAG, player["G+A"], player.Carries,  player.PrgP, player.PrgC], fillArea: true },
-                ]}
-                radar={{metrics: ['Goals', 'Goals-PK', 'Assists', 'xG','npxG', 'xAG', 'G+A', 'Carries', 'Progressive p.', 'Progressive c.','key passes']}}
-                
-                />    
-                <RadarChart height={300}
-                series={[
-                    { label: player.Player, data: [player.TklW, player.Int, player.Clr, player.Recov, player.CrdY, player.CrdR], fillArea: true },
-                ]}
-                radar={{metrics: ['Tackles Won', 'Interceptions', 'Clearances', 'Recoveries', 'Yellow C.', 'Red C.']}}
-                
-                />
-    </Stack>
 </Container>
 <Footer />
     </> 

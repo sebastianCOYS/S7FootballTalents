@@ -16,7 +16,7 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 //Router
 import { Link } from 'react-router';
-
+import {CircularProgress} from '@mui/material';
 
 export default function ComparePlayers() {
     const [inputNameX, setInputNameX] = useState("");
@@ -74,7 +74,7 @@ export default function ComparePlayers() {
         setSelectedPlayerYRk(player.Rk);
     }
 
-
+    if (isLoadingX || isLoadingY) return <><Box sx={{display: "flex", alignItems: "center", justifyContent: "center", width:"100vw", height: "100vh"}}><CircularProgress size={80}/></Box></>;
                 return (<>
                     <Box sx={{display:"flex", flexDirection: "row", justifyContent: "center"}}>
                         <form onSubmit={handleSubmitX}>
@@ -197,6 +197,5 @@ export default function ComparePlayers() {
       </Table>
 
     </TableContainer>
-    {/*  */}
-                </>)
+  </>)
 }

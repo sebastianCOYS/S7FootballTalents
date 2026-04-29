@@ -27,23 +27,27 @@ export default function PlayerGeneralStats({player, rating, nickname} : PlayerGe
             <Typography color="textSecondary" className="label">nation </Typography>
             <Typography variant="h6">{player.Nation}</Typography>
         </Paper>
-        <Paper className="item mp">
+         <Paper className="item Nation">
+            <Typography color="textSecondary" className="label">Birth year</Typography>
+            <Typography variant="h6">{player.Born}</Typography>
+        </Paper>
+        <Paper variant="outlined" className="item mp">
             <Typography color="textSecondary" className="label">mp </Typography>
             <Typography variant="h6">{player.MP}</Typography>
         </Paper>
-        <Paper variant="outlined" className="item gls">
+        <Paper className="item gls">
             <Typography color="textSecondary" className="label">gls </Typography>
             <Typography variant="h6">{player.Gls}</Typography>
         </Paper>
-        <Paper className="item ast">
+        <Paper variant="outlined" className="item ast">
             <Typography color="textSecondary" className="label">ast </Typography>
             <Typography variant="h6">{player.Ast}</Typography>
         </Paper>
-        <Paper variant="outlined" className="item pos">
+        <Paper className="item pos">
             <Typography color="textSecondary" className="label">pos </Typography>
             <Typography variant="h6">{player.Pos}</Typography>
         </Paper>
-        <Paper className="item comp">
+        <Paper variant="outlined" className="item comp">
             <Typography color="textSecondary" className="label">comp </Typography>
             <Typography variant="h6">{player.Comp}</Typography>
         </Paper>

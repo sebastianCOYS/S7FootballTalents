@@ -14,6 +14,7 @@ import {Alert} from "@mui/material";
 import {CircularProgress} from "@mui/material";
 import Footer from "../components/Footer";
 import {Stack} from "@mui/material";
+import PlayersRadarChart from "../components/PlayersRadarChart";
 import "./styles/compare.css"; 
  const navItems = [
         {page: "Search by name", link: "/name_search"},
@@ -42,22 +43,9 @@ export default function PlayerComparisonPage() {
                     </Paper>
                 </Paper>
                 <Stack sx={{display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
-                <RadarChart height={300}
-                series={[
-                    { label: playerX.Player, data: [playerX.Gls, playerX["G-PK"], playerX.Ast, playerX.xG, playerX.npxG, playerX.xAG, playerX["G+A"], playerX.Carries,  playerX.PrgP, playerX.PrgC], fillArea:true },
-                    {label: playerY.Player, data: [playerY.Gls, playerY["G-PK"], playerY.Ast, playerY.xG, playerY.npxG, playerY.xAG, playerY["G+A"], playerY.Carries,  playerY.PrgP, playerY.PrgC], fillArea:true },
-                ]}
-                radar={{metrics: ['Goals', 'Goals-PK', 'Assists', 'xG','npxG', 'xAG', 'G+A', 'Carries', 'Progressive p.', 'Progressive c.','key passes']}}
-                
-                />    
-                <RadarChart height={300}
-                series={[
-                    { label: playerX.Player, data: [playerX.TklW, playerX.Int, playerX.Clr, playerX.Recov, playerX.CrdY, playerX.CrdR], fillArea:true },
-                    {label: playerY.Player, data: [playerY.TklW, playerY.Int, playerY.Clr, playerY.Recov, playerY.CrdY, playerY.CrdR], fillArea:true },
-                ]}
-                radar={{metrics: ['Tackles Won', 'Interceptions', 'Clearances', 'Recoveries', 'Yellow C.', 'Red C.']}}
-                
-                /> 
+                <PlayersRadarChart playerX={playerX} playerY={playerY} chartType="offensive"/>    
+                <PlayersRadarChart playerX={playerX} playerY={playerY} chartType="defensive"/>    
+                {playerX.Pos === "GK" && <PlayersRadarChart playerX={playerX} playerY={playerY} chartType="goalkeeping"/>}    
                 </Stack>    
                 <Box sx={{ display: "flex", flexDirection: "row", gap: 2, padding: 2 }}>
 

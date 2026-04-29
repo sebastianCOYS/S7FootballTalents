@@ -16,7 +16,7 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';  
 //Router
 import { Link } from 'react-router';
-
+import {CircularProgress} from '@mui/material';
 
 export default function PlayerList() {
     const [inputGoals, setInputGoals] = useState(0);
@@ -37,6 +37,7 @@ export default function PlayerList() {
       setOffsetForHook(offsetForHook-10);
       setQueryParams({gls: inputGoals, ast: inputAssists, offset: offsetForHook-10})
     }
+    if (isLoading) return <><Box sx={{display: "flex", alignItems: "center", justifyContent: "center", width:"100vw", height: "100vh"}}><CircularProgress size={80}/></Box></>;
     return (
         <>
         <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "10px", marginBottom: "10px", padding: "10px"}}>
