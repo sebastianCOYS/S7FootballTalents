@@ -13,6 +13,8 @@ import { AutoAwesome } from "@mui/icons-material";
 import { SportsSoccer } from "@mui/icons-material";
 import { Container } from "@mui/material";
 import Footer from "../components/Footer.tsx";
+import Subtitle from "../components/Subtitle.tsx";
+import {Chip} from "@mui/material";
  const navItems = [
         {page: "Search by name", link: "/name_search"},
         {page: "advanced Search", link: "/custom_search"},
@@ -51,7 +53,8 @@ export default function Home() {
         <>
         <Header navItems={navItems}/>
         <Container maxWidth="xl">
-            <Title>S7 Football Talents</Title>
+            <Title><strong>Data-driven</strong> Football Scouting</Title>
+            <Chip label={"AI-integrated"} color="warning" variant="outlined" icon={<AutoAwesome  color="warning" fontSize="small" />}/>
             <Button sx={{width: "100%", p: 3, marginTop: "10px"}} variant="outlined" component={Link} to={"/custom_search"}><Typography sx={{ color: "text.primary" }}>Custom Search</Typography></Button> <br />
             <Button sx={{width: "100%", p: 3, marginTop: "10px"}} variant="outlined" component={Link} to={"/name_search"}><Typography sx={{ color: "text.primary" }}>Search by name</Typography></Button> <br />
             <Button sx={{width: "100%", p: 3, marginTop: "10px"}} variant="outlined" component={Link} to={"/compare_players"}><Typography sx={{ color: "text.primary" }}>Compare Players</Typography></Button> <br />
