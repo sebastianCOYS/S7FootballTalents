@@ -55,9 +55,9 @@ export default function Home() {
         <Container maxWidth="xl">
             <Title><strong>Data-driven</strong> Football Scouting</Title>
             <Chip label={"AI-integrated"} color="warning" variant="outlined" icon={<AutoAwesome  color="warning" fontSize="small" />}/>
-            <Button sx={{width: "100%", p: 3, marginTop: "10px"}} variant="outlined" component={Link} to={"/custom_search"}><Typography sx={{ color: "text.primary" }}>Custom Search</Typography></Button> <br />
+            <Button sx={{width: "100%", p: 3, marginTop: "10px"}} variant="outlined" component={Link} to={"/custom_search"}><Typography sx={{ color: "text.primary" }}>Advanced Search</Typography></Button> <br />
             <Button sx={{width: "100%", p: 3, marginTop: "10px"}} variant="outlined" component={Link} to={"/name_search"}><Typography sx={{ color: "text.primary" }}>Search by name</Typography></Button> <br />
-            <Button sx={{width: "100%", p: 3, marginTop: "10px"}} variant="outlined" component={Link} to={"/compare_players"}><Typography sx={{ color: "text.primary" }}>Compare Players</Typography></Button> <br />
+            <Button sx={{width: "100%", p: 3, marginTop: "10px"}} variant="outlined" component={Link} to={"/compare_players"}><Typography sx={{ color: "text.primary" }}>Compare players</Typography></Button> <br />
             <Typography sx={{marginTop: "20px"}} variant={"h2"}>Features</Typography>
             <FeatureGrid features={features}></FeatureGrid>
         </Container>

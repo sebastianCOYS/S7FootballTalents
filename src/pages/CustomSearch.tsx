@@ -13,7 +13,7 @@ export default function CustomSearch() {
         <>
         <Header navItems={navItems}/>
         <Container maxWidth="xl">
-            <Title>Search through statistics</Title>
+            <Title>Advanced Search</Title>
             <PlayerList/>        
         </Container>
         <Footer />

@@ -8,8 +8,8 @@ type PlayerRadarChartProps = {
 export default function PlayerRadarChart({player,chartType}: PlayerRadarChartProps) {
     if (chartType === "offensive") {
         return <RadarChart sx={{minWidth: "300px"}} height={300}
-                series={[{ label: player.Player, data: [player.Gls, player["G-PK"], player.Ast, player.xG, player.npxG, player.xAG, player["G+A"], player.Carries,  player.PrgP, player.PrgC], fillArea: true },]}
-                radar={{metrics: ['Goals', 'Goals-PK', 'Assists', 'xG','npxG', 'xAG', 'G+A', 'Carries', 'Progressive p.', 'Progressive c.','key passes']}}
+                series={[{ label: player.Player, data: [player.Gls, player["G-PK"], player.Ast, player.xG, player.npxG, player.xAG, player["G+A"], player.Carries,  player.PrgP, player.PrgC, player.Fld, player.Crs], fillArea: true },]}
+                radar={{metrics: ['Goals', 'Goals-PK', 'Assists', 'xG','npxG', 'xAG', 'G+A', 'Carries', 'Progressive p.', 'Progressive c.','key passes', 'fouls Drawn', 'crosses']}}
                 />
     }
     if (chartType === "defensive") {

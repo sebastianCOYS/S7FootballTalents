@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import usePlayers from '../hooks/usePlayers';
-import type {Player} from '../hooks/usePlayers';
+import type { PlayerMinified } from '../types/types';
 //mui table
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -64,12 +64,12 @@ export default function ComparePlayers() {
       setQueryParamsY({player: inputNameY, offset: offsetForHookY-10})
       }
         
-    function handlePlayerXSelected(player : Player) {
+    function handlePlayerXSelected(player : PlayerMinified) {
         setSelectedPlayerXName(player.Player);
         setSelectedPlayerXRk(player.Rk);
     }
     
-    function handlePlayerYSelected(player : Player) {
+    function handlePlayerYSelected(player : PlayerMinified) {
         setSelectedPlayerYName(player.Player);
         setSelectedPlayerYRk(player.Rk);
     }
