@@ -15,7 +15,7 @@ export default function FeatureCard(feature: FeatureCardProps) {
     
     return(
         <>
-            <Paper sx={{padding: "25px", borderRadius: "10px", height: "100%"}}>
+            <Paper sx={{padding: "25px", borderRadius: "20px", height: "100%"}}>
                 <Box sx={{marginBottom: "15px"}}>
                     {feature.icon}
                 </Box>

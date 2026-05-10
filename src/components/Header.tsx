@@ -49,7 +49,7 @@ const colorMode = useContext(ColorModeContext);
     <AppBar position="static" sx={{mb: "20px"}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <MenuItem component={Link} to={"/"} sx={{textDecoration: "none", borderRadius: "4px"}}>
+          <MenuItem component={Link} to={"/"} sx={{textDecoration: "none", borderRadius: "20px"}}>
             S7FT
           </MenuItem>
           
@@ -80,7 +80,7 @@ const colorMode = useContext(ColorModeContext);
               sx={{ display: { xs: 'block', md: 'none' } }}
             >
               {navItems.map(({page, link}) => (              
-                <MenuItem key={page} onClick={handleCloseNavMenu} component={Link} to={link}>
+                <MenuItem sx={{borderRadius: "20px"}} key={page} onClick={handleCloseNavMenu} component={Link} to={link}>
                   <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
                 </MenuItem>
 
@@ -108,7 +108,7 @@ const colorMode = useContext(ColorModeContext);
                 component={Link}
                 key={page}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2,color: 'white', margin: 1, display: 'block' }}
+                sx={{ my: 2,color: 'white', margin: 1, display: 'block', borderRadius: "20px" }}
                 to={link}
               >
                 {page}
@@ -116,7 +116,7 @@ const colorMode = useContext(ColorModeContext);
             ))}
           </Box>
           <Box sx={{ flexGrow: 0 }}>
-            <Button variant="outlined" sx={{ color: 'text.primary', backgroundColor: 'background.paper'}} onClick={colorMode.toggleColorMode}>
+            <Button variant="outlined" sx={{ color: 'text.primary', backgroundColor: 'background.paper', borderRadius: "20px"}} onClick={colorMode.toggleColorMode}>
               Switch Theme
             </Button>
           </Box>

@@ -19,10 +19,10 @@ export default function FeatureGrid({features}: FeatureGridProps) {
     return (
         <>
         <Box sx={{marginTop: "30px"}}>
-            <Grid container spacing={3}>
+            <Grid sx={{justifyContent: "center"}} container spacing={3}>
                 {features.map((feature) => (
                     <Grid size={{xs: 12, sm: 6, md: 4}} key={feature.title}>
-                        <Paper sx={{padding: "25px", borderRadius: "10px", height: "100%"}}>
+                        <Paper sx={{padding: "25px", borderRadius: "20px", height: "100%"}}>
                             <Box sx={{marginBottom: "15px"}}>
                                 {feature.icon}
                             </Box>              

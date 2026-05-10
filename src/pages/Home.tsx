@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { Button } from "@mui/material";
+import { Button, Paper } from "@mui/material";
 //components
 import Header from "../components/Header.tsx";
 import "./styles/Home.css";
@@ -7,13 +7,14 @@ import { Typography } from "@mui/material";
 import Title from "../components/Title.tsx";
 import FeatureGrid  from "../components/FeatureGrid.tsx";
 import SearchIcon from '@mui/icons-material/Search';
-import { Radar } from "@mui/icons-material";
+import { MarginTwoTone, Radar } from "@mui/icons-material";
 import { CompareArrows } from "@mui/icons-material";
 import { AutoAwesome } from "@mui/icons-material";
 import { SportsSoccer } from "@mui/icons-material";
 import { Container } from "@mui/material";
 import Footer from "../components/Footer.tsx";
 import Subtitle from "../components/Subtitle.tsx";
+import {Box} from "@mui/material";
 import {Chip} from "@mui/material";
  const navItems = [
         {page: "Search by name", link: "/name_search"},
@@ -30,11 +31,6 @@ import {Chip} from "@mui/material";
         title: "Custom Search",
         description: "Filter players by goals, assists, xG, xA etc.",
         icon: <SearchIcon fontSize="large" />
-        },
-        {
-        title: "Top 5 leagues",
-        description: "Our database features all players out of the world's top 5 best leagues.",
-        icon: <SportsSoccer fontSize="large" />
         },
         {
         title: "Compare Players",
@@ -55,11 +51,23 @@ export default function Home() {
         <Container maxWidth="xl">
             <Title><strong>Data-driven</strong> Football Scouting</Title>
             <Chip label={"AI-integrated"} color="warning" variant="outlined" icon={<AutoAwesome  color="warning" fontSize="small" />}/>
-            <Button sx={{width: "100%", p: 3, marginTop: "10px"}} variant="outlined" component={Link} to={"/custom_search"}><Typography sx={{ color: "text.primary" }}>Advanced Search</Typography></Button> <br />
-            <Button sx={{width: "100%", p: 3, marginTop: "10px"}} variant="outlined" component={Link} to={"/name_search"}><Typography sx={{ color: "text.primary" }}>Search by name</Typography></Button> <br />
-            <Button sx={{width: "100%", p: 3, marginTop: "10px"}} variant="outlined" component={Link} to={"/compare_players"}><Typography sx={{ color: "text.primary" }}>Compare players</Typography></Button> <br />
-            <Typography sx={{marginTop: "20px"}} variant={"h2"}>Features</Typography>
+            <Button sx={{width: "100%", p: 3, marginTop: "10px", borderRadius: "20px"}} variant="outlined" component={Link} to={"/custom_search"}><Typography sx={{ color: "text.primary" }}>Advanced Search</Typography></Button> <br />
+            <Button sx={{width: "100%", p: 3, marginTop: "10px", borderRadius: "20px"}} variant="outlined" component={Link} to={"/name_search"}><Typography sx={{ color: "text.primary" }}>Search by name</Typography></Button> <br />
+            <Button sx={{width: "100%", p: 3, marginTop: "10px", borderRadius: "20px"}} variant="outlined" component={Link} to={"/compare_players"}><Typography sx={{ color: "text.primary" }}>Compare players</Typography></Button> <br />
+            <Typography sx={{marginTop: "40px"}} variant={"h2"}>Features</Typography>
             <FeatureGrid features={features}></FeatureGrid>
+            <Typography sx={{marginTop: "40px", maxWidth: "800px"}} variant={"h2"}>Featuring players from <strong>all 5 biggest leagues</strong></Typography>
+            <Box sx={{display: "flex", flexDirection: "row", gap: "20px", alignItems: "center", justifyContent: "center", py: "20px", flexWrap: "wrap"}}>
+                <Paper sx={{display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "20px", width: "30%", height: "200px"}}><img width={"150px"} src="src/images/premierleague.png" alt="prem" /></Paper>
+                <Paper sx={{display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "20px", width: "30%", height: "200px"}}><img width={"100px"} src="src/images/laliga.png" alt="laliga" /></Paper>
+                <Paper sx={{display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "20px", width: "30%", height: "200px"}}><img width={"100px"} src="src/images/ligue1.png" alt="ligue 1" /></Paper>
+                <Paper sx={{display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "20px", width: "30%", height: "200px"}}><img width={"150px"} src="src/images/seriea.png" alt="serie a" /></Paper>
+                <Paper sx={{display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "20px", width: "30%", height: "200px"}}><img width={"100px"} src="src/images/bundesliga.png" alt="bundesliga" /></Paper>
+            </Box>
+            <Box sx={{display: "flex", flexDirection: "column"}}>
+            <Typography sx={{marginTop: "40px", maxWidth: "800px"}} variant={"h2"} >Get <strong>advanced analysis</strong>, key insights and the system the player is best suited for.</Typography>
+            <video src="src/images/ai_analysis_showcase_1080.mp4" autoPlay muted loop style={{borderRadius: "20px"}}></video>
+            </Box>
         </Container>
         <Footer/>
         
