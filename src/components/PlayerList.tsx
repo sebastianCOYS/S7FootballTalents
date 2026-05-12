@@ -40,25 +40,25 @@ export default function PlayerList() {
     if (isLoading) return <><Box sx={{display: "flex", alignItems: "center", justifyContent: "center", width:"100vw", height: "100vh"}}><CircularProgress size={80}/></Box></>;
     return (
         <>
-        <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "10px", marginBottom: "10px", padding: "10px"}}>
+        <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "20px", marginBottom: "10px", padding: "10px"}}>
           <form onSubmit={handleSubmit}>
-            <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "10px", marginBottom: "10px", padding: "10px"}} spacing={2}>
-                <TextField
+            <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "20px", marginBottom: "10px", padding: "10px"}} spacing={2}>
+                <TextField slotProps={{input: {style: {borderRadius: "20px"}}}}
                   label="Goals"
                   value={inputGoals}
                   onChange={(e) => setInputGoals(Number(e.target.value))}
                 />
-                <TextField
+                <TextField slotProps={{input: {style: {borderRadius: "20px"}}}}
                   label="Assists"
                   value={inputAssists}
                   onChange={(e) => setInputAssists(Number(e.target.value))}
                 />
-                <Button  type="submit" variant="contained"> Search</Button>
+                <Button sx={{borderRadius: "20px"}} type="submit" variant="contained"> Search</Button>
               </Stack>
           </form>
         </Stack>
 
-        <TableContainer component={Paper}>
+        <TableContainer sx={{borderRadius: "20px"}} component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>

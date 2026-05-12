@@ -1,24 +1,28 @@
+type insight = {
+    label: string,
+    evidence: string,
+    interpretation: string
+}
+
 export type AIApiResponse = 
 {
-  success: boolean;
-  data: {
-        nickname: string,
-        rating: string,
-        summary: string,
-        apiLimitReached: boolean,
-    }
+  success: boolean,
+        data: {
+          profileTag: string,
+          insights: insight[],
+          roleFit: string,
+          summary: string,
+          apiLimitReached: boolean,
+        }
 }
+
 
 export type AIApiComparisonResponse = 
 {
  success: boolean,
     data: {
-        nicknameX: string,
-        nicknameY: string,
-        ratingX: string,
-        ratingY: string,
         summary: string,
-        apiLimitReached: boolean,
+        apiLimitReached: boolean
     }
 }
 export type PlayerMinified = {
