@@ -1,5 +1,6 @@
 //this file handles fetching players form API with optional query parameters
 import {useState, useEffect} from 'react';
+import type { PlayerMinified } from '../types/types';
 
 //accepts optional parameters given from PlayerList component
 // any combination of these parameters can be passed to usePlayers hook
@@ -11,23 +12,18 @@ type usePlayersProps = {
     ast?: number | string;
     prgc?: number | string;
     prgp?: number | string;
+    xA?: number | string;
+    xG?: number | string;
+    position?: string;
     //for name_search_page
     player?: string;
 }
-
-export type Player = {
-    Rk: number;
-    Player: string;
-    Age: number;
-    Squad: string;
-}
-
 //returns a json with players and loading state
-export default function usePlayers({age, mp, gls, ast, prgc, prgp, player, offset}: usePlayersProps) {
+export default function usePlayers({age, mp, gls, ast, prgc, prgp, xA, xG, player, position, offset}: usePlayersProps) {
 
     //setPlayers only ever accepts an array of <Player> objects
     //([]) is the default value "the initial state" - empty array
-    const [players, setPlayers] = useState<Player[]>([]);
+    const [players, setPlayers] = useState<PlayerMinified[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [hasNextPage, setHasNextPage] = useState(false);
     const [hasPreviousPage, setHasPreviousPage] = useState(false);
@@ -37,15 +33,16 @@ export default function usePlayers({age, mp, gls, ast, prgc, prgp, player, offse
         let query: string = "";
         //no need to sanitize inputs(for now), backend will handle that
         if(age != null) query += "age=" + age + "&";
-        if(mp != null) query += "mp=" + mp + "&";
         if(gls != null) query += "gls=" + gls + "&";
         if(ast != null) query += "ast=" + ast + "&";
-        if(prgc != null) query += "prgc=" + prgc + "&";
-        if(prgp != null) query += "prgp=" + prgp + "&";
+        if(mp != null && mp != 0) query += "mp=" +  mp + "&";
+        if(xG != null && xG != 0) query += "xG=" + xG + "&";
+        if(xA != null && xA != 0) query += "xA=" + xA + "&";
         if(player != null) query += "player=" + player + "&";
+        if(position != null && position !== "ANY") query += "pos=" + position + "&";
         query += "offset=" + offset + "&";
         if(query.endsWith("&")) query = query.slice(0, -1);
-        
+        console.log(query);
 
         async function fetchPlayers() {
             try {
@@ -81,7 +78,7 @@ export default function usePlayers({age, mp, gls, ast, prgc, prgp, player, offse
 
 
         fetchPlayers();
-    },[age, mp, gls, ast, prgc, prgp, player, offset]);
+    },[age, mp, gls, ast, prgc, prgp, xG, xA, player, position, offset]);
     return {players, error, isLoading, hasPreviousPage, hasNextPage};
 }
 

@@ -1,10 +1,16 @@
 import { useState } from "react";
 import { promptBackendAi, promptBackendAiComparison } from "../services/api";
+type insight = {
+    label: string,
+    evidence: string,
+    interpretation: string
+}
 import type { playerCompleteType } from "../types/playerComplete";
 export default function useAi(player: playerCompleteType | null) {
-    const [nickname, setNickname] = useState<string | null>(null);
-    const [rating, setRating] = useState<string | null>(null);
+    const [profileTag, setProfileTag] = useState<string | null>(null);
     const [summary, setSummary] = useState<string | null>(null);
+    const [insights, setInsights] = useState<insight[] | null>(null);
+    const [roleFit, setRoleFit] = useState<string | null>(null);
     const [apiLimitReached, setApiLimitReached] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -21,8 +27,9 @@ export default function useAi(player: playerCompleteType | null) {
         try {
             const response = await promptBackendAi(player);
              setApiLimitReached(response.data.apiLimitReached);
-             setNickname(response.data.nickname);
-             setRating(response.data.rating);
+             setInsights(response.data.insights);
+             setRoleFit(response.data.roleFit);
+             setProfileTag(response.data.profileTag);
              setSummary(response.data.summary);
             if (response.data.apiLimitReached === true) {
              setTimeout(() => {
@@ -38,5 +45,8 @@ export default function useAi(player: playerCompleteType | null) {
         
     }
 
-    return {summary, nickname, rating, isLoading, error, apiLimitReached, generateAiPlayerSummary};
+    return {summary, profileTag, roleFit, insights, isLoading, error, apiLimitReached, generateAiPlayerSummary};
 }
+
+
+

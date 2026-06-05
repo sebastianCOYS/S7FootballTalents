@@ -37,7 +37,22 @@ export default function PlayerList() {
       setQueryParams({player: inputName, offset: offsetForHook-10})
       }
 
-    if (isLoading) return <><Box sx={{display: "flex", alignItems: "center", justifyContent: "center", width:"100vw", height: "100vh"}}><CircularProgress size={80}/></Box></>;
+    if (isLoading) return <>
+    <form onSubmit={handleSubmit}>
+          <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "10px", marginBottom: "10px", padding: "10px"}} spacing={2}>
+            <TextField
+              label="Player Name"
+              slotProps={{input: {style: {borderRadius: "20px"}}}}
+              value={inputName}
+              onChange={(e) => setInputName(e.target.value)}
+            />
+            <Button sx={{borderRadius: "20px"}} type="submit" variant="contained">
+              Search
+            </Button>
+          </Stack>
+        </form>
+    <Box sx={{height: "653.667px", backgroundColor: "#1e1e1e"}}></Box>
+    </>;
       
     return (
         <>
@@ -46,10 +61,11 @@ export default function PlayerList() {
           <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "10px", marginBottom: "10px", padding: "10px"}} spacing={2}>
             <TextField
               label="Player Name"
+              slotProps={{input: {style: {borderRadius: "20px"}}}}
               value={inputName}
               onChange={(e) => setInputName(e.target.value)}
             />
-            <Button type="submit" variant="contained">
+            <Button sx={{borderRadius: "20px"}} type="submit" variant="contained">
               Search
             </Button>
           </Stack>

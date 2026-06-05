@@ -2,55 +2,59 @@ import React from 'react';
 import { Box, Typography } from '@mui/material';
 import {Button, Paper, Chip} from '@mui/material';
 import type { playerCompleteType } from '../types/playerComplete';
+import spainFlag from "../images/spainflag.png";
+import {Divider} from '@mui/material';
+type insight = {
+    label: string,
+    evidence: string,
+    interpretation: string
+}
 type PlayerGeneralStatsProps = {
   player: playerCompleteType,
-  rating?: string | null,
-  nickname?: string | null
+  profileTag?: string | null,
+  roleFit?: string | null
+  insights?: insight[] | null
 }
-export default function PlayerGeneralStats({player, rating, nickname} : PlayerGeneralStatsProps) {
+export default function PlayerGeneralStats({player, profileTag, roleFit} : PlayerGeneralStatsProps) {
   return (
-        <Paper sx={{padding: 2}} variant={"outlined"} className="container">
-        <Paper variant="outlined" className="item name">
+    <>
+        <Paper sx={{borderRadius: "20px", p: "10px"}} variant="outlined" className="item name">
             <Typography variant="h3">{player.Player}</Typography>
-            <Box  sx={{display: "flex", flexDirection: "row", alignItems: "center", gap:1, m: 2, flexWrap: "wrap"}}>
-                <Typography variant="h6">AI nickname:</Typography>
-                <Chip color="warning" variant="outlined" label={nickname ? nickname : "AI nickname"} />
-                <Typography variant="h6">AI rating:</Typography>
-                <Chip color="warning" label={rating ? `${rating}/99` : "AI rating"} />
-            </Box>
+                {profileTag && roleFit ? <><Typography variant="h6">preferred role:</Typography><Chip color="warning" variant="outlined" label={profileTag} /><Typography variant="h6">preferred system:</Typography><Chip color="warning" label={roleFit} /></> : null}
         </Paper>
-        <Paper className="item squad">
+       
+        <Paper sx={{borderRadius: "20px", p: "10px"}} className="item squad">
             <Typography color="textSecondary" className="label">team </Typography>
             <Typography variant="h6">{player.Squad}</Typography>
         </Paper>
-        <Paper variant="outlined" className="item Nation">
+        <Paper sx={{borderRadius: "20px", p: "10px"}} variant="outlined" className="item Nation">
             <Typography color="textSecondary" className="label">nation </Typography>
-            <Typography variant="h6">{player.Nation}</Typography>
+            <Typography variant="h6">{player.Nation === "es ESP" ? <img height={"32px"} src={spainFlag} alt="spain" title="spain" /> : player.Nation}</Typography>
         </Paper>
-         <Paper className="item Nation">
+         <Paper sx={{borderRadius: "20px", p: "10px"}} className="item Nation">
             <Typography color="textSecondary" className="label">Birth year</Typography>
             <Typography variant="h6">{player.Born}</Typography>
         </Paper>
-        <Paper variant="outlined" className="item mp">
+        <Paper sx={{borderRadius: "20px", p: "10px"}} variant="outlined" className="item mp">
             <Typography color="textSecondary" className="label">mp </Typography>
             <Typography variant="h6">{player.MP}</Typography>
         </Paper>
-        <Paper className="item gls">
+        <Paper sx={{borderRadius: "20px", p: "10px"}} className="item gls">
             <Typography color="textSecondary" className="label">gls </Typography>
             <Typography variant="h6">{player.Gls}</Typography>
         </Paper>
-        <Paper variant="outlined" className="item ast">
+        <Paper sx={{borderRadius: "20px", p: "10px"}} variant="outlined" className="item ast">
             <Typography color="textSecondary" className="label">ast </Typography>
             <Typography variant="h6">{player.Ast}</Typography>
         </Paper>
-        <Paper className="item pos">
+        <Paper sx={{borderRadius: "20px", p: "10px"}} className="item pos">
             <Typography color="textSecondary" className="label">pos </Typography>
             <Typography variant="h6">{player.Pos}</Typography>
         </Paper>
-        <Paper variant="outlined" className="item comp">
+        <Paper sx={{borderRadius: "20px", p: "10px"}} variant="outlined" className="item comp">
             <Typography color="textSecondary" className="label">comp </Typography>
             <Typography variant="h6">{player.Comp}</Typography>
         </Paper>
-    </Paper>
+        </>
   );
 }

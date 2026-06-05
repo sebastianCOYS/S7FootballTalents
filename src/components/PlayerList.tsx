@@ -14,6 +14,7 @@ import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';  
+import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 //Router
 import { Link } from 'react-router';
 import {CircularProgress} from '@mui/material';
@@ -21,26 +22,29 @@ import {CircularProgress} from '@mui/material';
 export default function PlayerList() {
     const [inputGoals, setInputGoals] = useState(0);
     const [inputAssists, setInputAssists] = useState(0);
-    const [queryParams, setQueryParams] = useState({gls: 0, ast: 0, offset: 0});
+    const [inputPosition, setInputPosition] = useState("ANY");
+    const [inputMatchesPlayed, setInputMatchesPlayed] = useState(0);
+    const [inputxG, setInputxG] = useState(0);
+    const [inputxA, setInputxA] = useState(0);
+    const [queryParams, setQueryParams] = useState({gls: 0, ast: 0, offset: 0, position: "ANY", mp: 0, xG: 0, xA: 0});
     const { players, isLoading, hasPreviousPage, hasNextPage } = usePlayers(queryParams);
     const [offsetForHook, setOffsetForHook] = useState(0);
+
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-        setQueryParams({gls:inputGoals, ast: inputAssists, offset: 0});
+        setQueryParams({gls:inputGoals, ast: inputAssists, position: inputPosition, mp: inputMatchesPlayed, xG: inputxG, xA: inputxA, offset: 0});
         setOffsetForHook(0);
     }
     function handleNextPage() {
       setOffsetForHook(offsetForHook+10);
-      setQueryParams({gls: inputGoals, ast: inputAssists, offset: offsetForHook+10});
+      setQueryParams({gls: inputGoals, ast: inputAssists, position: inputPosition, mp: inputMatchesPlayed, xG: inputxG, xA: inputxA, offset: offsetForHook+10});
     }
     function handlePreviousPage() {
       setOffsetForHook(offsetForHook-10);
-      setQueryParams({gls: inputGoals, ast: inputAssists, offset: offsetForHook-10})
+      setQueryParams({gls: inputGoals, ast: inputAssists, position: inputPosition, mp: inputMatchesPlayed, xG: inputxG, xA: inputxA, offset: offsetForHook-10})
     }
-    if (isLoading) return <><Box sx={{display: "flex", alignItems: "center", justifyContent: "center", width:"100vw", height: "100vh"}}><CircularProgress size={80}/></Box></>;
-    return (
-        <>
-        <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "20px", marginBottom: "10px", padding: "10px"}}>
+    if (isLoading) return <>
+    <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "20px", marginBottom: "10px", padding: "10px"}}>
           <form onSubmit={handleSubmit}>
             <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "20px", marginBottom: "10px", padding: "10px"}} spacing={2}>
                 <TextField slotProps={{input: {style: {borderRadius: "20px"}}}}
@@ -53,6 +57,57 @@ export default function PlayerList() {
                   value={inputAssists}
                   onChange={(e) => setInputAssists(Number(e.target.value))}
                 />
+                <Button sx={{borderRadius: "20px"}} type="submit" variant="contained"> Search</Button>
+              </Stack>
+          </form>
+        </Stack>
+    <Box sx={{height: "653.667px", backgroundColor: "#1e1e1e"}}></Box>    
+    </>;
+    return (
+        <>
+        <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "20px", marginBottom: "10px", padding: "10px"}}>
+          <form onSubmit={handleSubmit}>
+            <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', flexWrap: "wrap", alignItems: 'center', borderRadius: "20px", marginBottom: "10px", padding: "10px"}} spacing={2}>
+                <TextField slotProps={{input: {style: {borderRadius: "20px"}}}}
+                  label="Goals"
+                  value={inputGoals}
+                  onChange={(e) => setInputGoals(Number(e.target.value))}
+                />
+                <TextField slotProps={{input: {style: {borderRadius: "20px"}}}}
+                  label="Assists"
+                  value={inputAssists}
+                  onChange={(e) => setInputAssists(Number(e.target.value))}
+                />
+                <TextField slotProps={{input: {style: {borderRadius: "20px"}}}}
+                  label="matches"
+                  value={inputMatchesPlayed}
+                  onChange={(e) => setInputMatchesPlayed(Number(e.target.value))}
+                />
+                 <TextField slotProps={{input: {style: {borderRadius: "20px"}}}}
+                  inputProps={{ step: 0.1 }}
+                  label="xG"
+                  type="number"
+                  value={inputxG}
+                  onChange={(e) => setInputxG(Number(e.target.value))}/>
+
+                <TextField slotProps={{input: {style: {borderRadius: "20px"}}}}
+                inputProps={{ step: 0.1 }}
+                  label="xA"
+                   type="number"
+                  value={inputxA}
+                  onChange={(e) => setInputxA(Number(e.target.value))}
+                />
+                <FormControl sx={{minWidth: 140}}>
+                  <InputLabel id="positionLabel">Position</InputLabel>
+
+                  <Select sx={{borderRadius: "20px"}} labelId="positionLabel" value={inputPosition} label="Position" onChange={(e) => setInputPosition(e.target.value)}>
+                    <MenuItem value="ANY">Any</MenuItem>
+                    <MenuItem value="FW">Forward</MenuItem>
+                    <MenuItem value="MF">Midfielder</MenuItem>
+                    <MenuItem value="DF">Defender</MenuItem>
+                    <MenuItem value="GK">Goalkeeper</MenuItem>
+                  </Select>
+              </FormControl>
                 <Button sx={{borderRadius: "20px"}} type="submit" variant="contained"> Search</Button>
               </Stack>
           </form>

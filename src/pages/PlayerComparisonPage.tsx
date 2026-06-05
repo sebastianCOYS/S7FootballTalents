@@ -27,7 +27,7 @@ export default function PlayerComparisonPage() {
 
     const { player: playerX, error: errorX, isLoading: isLoadingX } = usePlayer(Number(playerXRk));
     const { player: playerY, error: errorY, isLoading: isLoadingY } = usePlayer(Number(playerYRk));
-    const {summary, nicknameX, nicknameY, ratingX, ratingY, apiLimitReached, isLoading: isLoadingAi, error: errorAi, generateAiPlayerComparison} = useAiComparison(playerX, playerY);
+    const {summary, apiLimitReached, isLoading: isLoadingAi, error: errorAi, generateAiPlayerComparison} = useAiComparison(playerX, playerY);
     if (isLoadingX || isLoadingY) return <><Header navItems={navItems}/><Box sx={{display: "flex", alignItems: "center", justifyContent: "center", width:"100vw", height: "100vh"}}><CircularProgress size={80}/></Box></>;
     if (errorX || errorY) return <><Header navItems={navItems}/><Alert severity="error">Something went wrong</Alert></>;
     if (playerX === null || playerY === null) return <><Header navItems={navItems}/><Alert severity="error">No player found...</Alert></>;
@@ -50,14 +50,14 @@ export default function PlayerComparisonPage() {
                 <Box sx={{ display: "flex", flexDirection: "row", gap: 2, padding: 2 }}>
 
                     <Box sx={{ width: "50%" }}>
-                        <PlayerGeneralStats player={playerX} rating={ratingX} nickname={nicknameX}/>
+                        <PlayerGeneralStats player={playerX}/>
                         <PlayerGoalkeepingStats {...playerX}/>
                         <PlayerOffensiveStats {...playerX}/>
                         <PlayerDefensiveStats {...playerX}/>
                     </Box>
       
                     <Box sx={{ width: "50%" }}>
-                        <PlayerGeneralStats player={playerY} rating={ratingY} nickname={nicknameY}/>
+                        <PlayerGeneralStats player={playerY}/>
                         <PlayerGoalkeepingStats {...playerY}/>
                         <PlayerOffensiveStats {...playerY}/>
                         <PlayerDefensiveStats {...playerY}/>   

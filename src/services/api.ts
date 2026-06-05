@@ -1,25 +1,7 @@
 import type {playerCompleteType} from "../types/playerComplete";
-type AiResponse = {
-    success: boolean,
-    data: {
-        nickname: string,
-        rating: string,
-        summary: string,
-        apiLimitReached: boolean,
-    }
-}
-type AiComparisonResponse = {
-    success: boolean,
-    data: {
-        nicknameX: string,
-        nicknameY: string,
-        ratingX: string,
-        ratingY: string,
-        summary: string,
-        apiLimitReached: boolean,
-    }   
-}
-export async function promptBackendAi(player : playerCompleteType): Promise<AiResponse> {
+import type { AIApiComparisonResponse} from "../types/types";
+import type { AIApiResponse } from "../types/types";
+export async function promptBackendAi(player : playerCompleteType): Promise<AIApiResponse> {
     const response = await fetch(import.meta.env.VITE_API_URL + "/ai",
         {
             method: "POST",
@@ -35,7 +17,7 @@ export async function promptBackendAi(player : playerCompleteType): Promise<AiRe
     return(await response.json());
 }
 
-export async function promptBackendAiComparison(playerX: playerCompleteType, playerY: playerCompleteType): Promise<AiComparisonResponse> {
+export async function promptBackendAiComparison(playerX: playerCompleteType, playerY: playerCompleteType): Promise<AIApiComparisonResponse> {
 
         const response = await fetch(import.meta.env.VITE_API_URL + "/ai/comparison",
                     {

@@ -1,3 +1,7 @@
+
+
+
+
 //generated app.quicktype.io with some tweaks 
 export type playerCompleteType = {
     Rk:                         number;
@@ -165,4 +169,14 @@ export type playerCompleteType = {
     "#OPA":                     number | string;
     "#OPA/90":                  number | string;
     AvgDist:                    number | string;
+    gls_per90:                 number;
+    ast_per90:                 number;
+    xg_per90:                  number;
+    prgp_per90:                number;
+    prgc_per90:                number;
+    gls_percentile:            number;
+    ast_percentile:            number;
+    xg_percentile:             number;
+    prgp_percentile:           number;
+    prgc_percentile:           number;
 }

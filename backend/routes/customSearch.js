@@ -19,7 +19,7 @@ router.get('/' , async (req, res, next) => {
     try {
 
     //defining valid query parameters
-    const validParams = ['offset','age', 'mp', 'gls', 'ast', 'prgc', 'prgp', 'player', 'pos', 'team', 'league'];
+    const validParams = ['offset','age', 'mp', 'xG', 'xA', 'gls', 'ast', 'prgc', 'prgp', 'player', 'pos', 'team', 'league'];
     const queryEntries = Object.entries(req.query);
     
     let sql = "select * from players_24_25 WHERE 1=1";

@@ -74,17 +74,51 @@ export default function ComparePlayers() {
         setSelectedPlayerYRk(player.Rk);
     }
 
-    if (isLoadingX || isLoadingY) return <><Box sx={{display: "flex", alignItems: "center", justifyContent: "center", width:"100vw", height: "100vh"}}><CircularProgress size={80}/></Box></>;
+    if (isLoadingX || isLoadingY) return <>
+      <Box sx={{display:"flex", flexDirection: "row", justifyContent: "center"}}>
+                            <form onSubmit={handleSubmitX}>
+                          <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "10px", marginBottom: "10px", padding: "10px"}} spacing={2}>
+                            <TextField
+                              label="Name of player X"
+                              slotProps={{input: {style: {borderRadius: "20px"}}}}
+                              value={inputNameX}
+                              onChange={(e) => setInputNameX(e.target.value)}
+                            />
+                            <Button sx={{borderRadius: "20px"}} type="submit" variant="contained">
+                              Search
+                            </Button>
+                          </Stack>
+                        </form>
+                                                <form onSubmit={handleSubmitY}>
+                          <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "10px", marginBottom: "10px", padding: "10px"}} spacing={2}>
+                            <TextField
+                              label="Name of player Y"
+                              slotProps={{input: {style: {borderRadius: "20px"}}}}
+                              value={inputNameY}
+                              onChange={(e) => setInputNameY(e.target.value)}
+                            />
+                            <Button sx={{borderRadius: "20px"}} type="submit" variant="contained">
+                              Search
+                            </Button>
+                          </Stack>
+                        </form>
+                      </Box>
+
+                        {/* to match the height of the table when its filled in.(illusion) */}
+                        <Box sx={{height: "653.667px", backgroundColor:"#1e1e1e"}}>
+                        </Box>
+    </>;
                 return (<>
                     <Box sx={{display:"flex", flexDirection: "row", justifyContent: "center"}}>
                         <form onSubmit={handleSubmitX}>
                           <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "10px", marginBottom: "10px", padding: "10px"}} spacing={2}>
                             <TextField
                               label="Name of player X"
+                              slotProps={{input: {style: {borderRadius: "20px"}}}}
                               value={inputNameX}
                               onChange={(e) => setInputNameX(e.target.value)}
                             />
-                            <Button type="submit" variant="contained">
+                            <Button sx={{borderRadius: "20px"}} type="submit" variant="contained">
                               Search
                             </Button>
                           </Stack>
@@ -94,10 +128,11 @@ export default function ComparePlayers() {
                           <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "10px", marginBottom: "10px", padding: "10px"}} spacing={2}>
                             <TextField
                               label="Name of player Y"
+                              slotProps={{input: {style: {borderRadius: "20px"}}}}
                               value={inputNameY}
                               onChange={(e) => setInputNameY(e.target.value)}
                             />
-                            <Button type="submit" variant="contained">
+                            <Button sx={{borderRadius: "20px"}} type="submit" variant="contained">
                               Search
                             </Button>
                           </Stack>

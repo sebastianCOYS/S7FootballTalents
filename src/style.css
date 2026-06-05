@@ -8,3 +8,6 @@ a {
     color: white;
 }
 
+input {
+    border-radius: 50px !important;
+}
