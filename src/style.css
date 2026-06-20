@@ -2,7 +2,7 @@
     line-height: 1.5;
 } 
 * {
-    font-family: "roboto", arial, sans-serif;
+    font-family: "Inter", serif !important;
 }
 a {
     color: white;
