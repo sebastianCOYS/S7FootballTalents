@@ -1,81 +1,75 @@
-import {useParams} from "react-router";
+import { useParams } from "react-router";
 import usePlayer from "../hooks/usePlayer";
-import {CircularProgress, Typography} from "@mui/material"
+import { CircularProgress, Typography } from "@mui/material"
 import Header from "../components/Header";
-import {Paper} from "@mui/material";
+import { Paper } from "@mui/material";
 import useAi from "../hooks/useAi";
-import {Button} from "@mui/material";
-import {Box} from "@mui/material";
+import { Button } from "@mui/material";
+import { Box } from "@mui/material";
 import Stack from '@mui/material/Stack';
 import PlayerOffensiveStats from "../components/PlayerOffensiveStats";
 import PlayerDefensiveStats from "../components/PlayerDefensiveStats";
 import PlayerGoalkeepingStats from "../components/PlayerGoalkeepingStats";
-import {Alert} from "@mui/material";
-import {Container} from "@mui/material";
+import { Alert } from "@mui/material";
+import { Container } from "@mui/material";
 import PlayerGeneralStats from "../components/PlayerGeneralStats";
-import Footer from "../components/Footer";
 import PlayerRadarChart from "../components/PlayerRadarChart";
-import {Divider} from "@mui/material";
-import {LinearProgress} from "@mui/material";
- const navItems = [
-        {page: "Search by name", link: "/name_search"},
-        {page: "advanced Search", link: "/custom_search"},
-        {page: "Compare players", link: "/compare_players"},
-    ]
+import { Divider } from "@mui/material";
+const navItems = [
+    { page: "Search by name", link: "/name_search" },
+    { page: "Advanced Search", link: "/advanced_search" },
+    { page: "Compare players", link: "/compare_players" },
+]
 
 export default function PlayerPage() {
 
-    const {playerRk} = useParams();
-    const {player, error, isLoading} = usePlayer(Number(playerRk));   
-    const {summary, roleFit, profileTag, insights, isLoading: isLoadingAi, error: errorAi, apiLimitReached, generateAiPlayerSummary } = useAi(player);
-    
-    if (isLoading) return <><Header navItems={navItems}/><Box sx={{display: "flex", alignItems: "center", justifyContent: "center", width:"100vw", height: "100vh"}}><CircularProgress size={80}/></Box></>;
-    if (error) return <><Header navItems={navItems}/><Alert severity="error">Something went wrong</Alert></>;
-    if (player === null) return <><Header navItems={navItems}/><Alert severity="error">No player found...</Alert></>;
-    return (<>  
-    <Header navItems={navItems}/>
-    
-    
-    <Container maxWidth="xl">
-        <Button sx={{width: "100%", my: 1, borderRadius: "20px"}} disabled={apiLimitReached ? apiLimitReached : isLoadingAi} variant="contained" color="warning" onClick={generateAiPlayerSummary}>{isLoadingAi ? "loading..." : "AI analyze player"}</Button>
-    <Paper sx={{p: 2, borderRadius: "20px"}}>
-        <Typography sx={{minHeight: "50px"}}>{summary ? summary : errorAi}</Typography>
-    </Paper>
-    
-        
-     <Paper sx={{display: "flex", flexDirection: "row", width: "100%", minHeight: "100px", borderRadius: "20px", py: "10px", marginTop: "20px"}}>
-            {insights?.map((insight, index) => {
-                return (
-                <Box key={index}>
-                    <Box sx={{p: "10px"}}><strong><Typography variant='h5'>{insight.label}</Typography></strong></Box>
-                    <Divider></Divider>
-                    <Box sx={{p: "10px"}}>{insight.evidence}</Box>
-                    <Box sx={{p: "10px"}}>{insight.interpretation}</Box>
+    const { playerRk } = useParams();
+    const { player, error, isLoading } = usePlayer(Number(playerRk));
+    const { summary, roleFit, profileTag, insights, isLoading: isLoadingAi, error: errorAi, apiLimitReached, generateAiPlayerSummary } = useAi(player);
+
+    if (isLoading) return <><Header navItems={navItems} /><Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100vw", height: "100vh" }}><CircularProgress size={80} /></Box></>;
+    if (error) return <><Header navItems={navItems} /><Alert severity="error">Something went wrong</Alert></>;
+    if (player === null) return <><Header navItems={navItems} /><Alert severity="error">No player found...</Alert></>;
+    return (<>
+        <Container maxWidth="xl">
+            <Button sx={{ width: "100%", my: 2, borderRadius: "20px" }} disabled={apiLimitReached ? apiLimitReached : isLoadingAi} variant="contained" color="warning" onClick={generateAiPlayerSummary}>{isLoadingAi ? "loading..." : "AI analyze player"}</Button>
+            <Paper sx={{ p: 4, borderRadius: "20px" }}>
+                <Typography sx={{ minHeight: "50px" }}>{summary ? summary : errorAi}</Typography>
+            </Paper>
+
+
+            <Paper sx={{ display: "flex", flexDirection: "row", width: "100%", minHeight: "100px", borderRadius: "20px", py: 2, marginTop: 4 }}>
+                {insights?.map((insight, index) => {
+                    return (
+                        <Box key={index}>
+                            <Box sx={{ p: 2 }}><strong><Typography variant='h5'>{insight.label}</Typography></strong></Box>
+                            <Divider></Divider>
+                            <Box sx={{ p: 2 }}>{insight.evidence}</Box>
+                            <Box sx={{ p: 2 }}>{insight.interpretation}</Box>
+                        </Box>
+                    )
+                })}
+            </Paper>
+            <Box sx={{ display: "flex", my: 4 }}>
+                <Typography variant="h3" sx={{ m: 2 }}>Percentiles</Typography>
+                <Box sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap", gap: 2 }}>
+                    <Paper sx={{ minWidth: "200px", p: 2, borderRadius: "20px" }}><Typography color="primary.light">Goals/90</Typography><Typography>{player.gls_percentile}th</Typography></Paper>
+                    <Paper sx={{ minWidth: "200px", p: 2, borderRadius: "20px" }}> <Typography color="primary.light">Assists/90</Typography><Typography>{player.ast_percentile}th</Typography></Paper>
+                    <Paper sx={{ minWidth: "200px", p: 2, borderRadius: "20px" }}><Typography color="primary.light">Progressive Carries/90</Typography><Typography>{player.prgc_percentile}th</Typography></Paper>
+                    <Paper sx={{ minWidth: "200px", p: 2, borderRadius: "20px" }}><Typography color="primary.light">Progressive Passes/90</Typography><Typography>{player.prgp_percentile}th</Typography></Paper>
+                    <Paper sx={{ minWidth: "200px", p: 2, borderRadius: "20px" }}> <Typography color="primary.light">expected Goals/90</Typography><Typography>{player.xg_percentile}th</Typography></Paper>
                 </Box>
-                )
-            })}
-    </Paper>
-    <Box sx={{display: "flex", my: "20px"}}>
-    <Typography variant="h3" sx={{m: "8px"}}>Percentiles</Typography>
-    <Box sx={{display: "flex", flexDirection:"row",  flexWrap: "wrap", gap:"8px"}}>
-        <Paper sx={{minWidth:"200px",p: "10px", borderRadius: "20px"}}><Typography color="primary.light">Goals/90</Typography><Typography>{player.gls_percentile}th</Typography></Paper>
-        <Paper sx={{minWidth:"200px",p: "10px", borderRadius: "20px"}}> <Typography color="primary.light">Assists/90</Typography><Typography>{player.ast_percentile}th</Typography></Paper>
-        <Paper sx={{minWidth:"200px",p: "10px", borderRadius: "20px"}}><Typography color="primary.light">Progressive Carries/90</Typography><Typography>{player.prgc_percentile}th</Typography></Paper>
-        <Paper sx={{minWidth:"200px",p: "10px", borderRadius: "20px"}}><Typography color="primary.light">Progressive Passes/90</Typography><Typography>{player.prgp_percentile}th</Typography></Paper>
-        <Paper sx={{minWidth:"200px",p: "10px", borderRadius: "20px"}}> <Typography color="primary.light">expected Goals/90</Typography><Typography>{player.xg_percentile}th</Typography></Paper>
-    </Box>
-    </Box>
-    <Stack sx={{display: "flex", flexDirection: "row", flexWrap: "wrap", py: "24px"}}>
-            <PlayerRadarChart player={player} chartType="offensive"/>
-            <PlayerRadarChart player={player} chartType="defensive"/>
-            {player.Pos === "GK" && <PlayerRadarChart player={player} chartType="goalkeeping"/>}
-    </Stack>
-    <PlayerGeneralStats player={player} roleFit={roleFit} profileTag={profileTag} insights={insights}/>
-    { player.Pos === "GK" && <PlayerGoalkeepingStats {...player}/> }
-    <PlayerOffensiveStats {...player}/>
-    <PlayerDefensiveStats {...player}/>
-</Container>
-<Footer />
-    </> 
-        )
-    }
+            </Box>
+            <Stack sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap", py: 4 }}>
+                <PlayerRadarChart player={player} chartType="offensive" />
+                <PlayerRadarChart player={player} chartType="defensive" />
+                {player.Pos === "GK" && <PlayerRadarChart player={player} chartType="goalkeeping" />}
+            </Stack>
+            <PlayerGeneralStats player={player} roleFit={roleFit} profileTag={profileTag} insights={insights} />
+            {player.Pos === "GK" && <PlayerGoalkeepingStats {...player} />}
+            <PlayerOffensiveStats {...player} />
+            <PlayerDefensiveStats {...player} />
+        </Container>
+    </>
+    )
+}

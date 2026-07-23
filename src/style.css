@@ -1,9 +1,11 @@
 :root {
     line-height: 1.5;
-} 
-* {
-    font-family: "Inter", serif !important;
 }
+
+* {
+    font-family: "Rubik", serif !important;
+}
+
 a {
     color: white;
 }

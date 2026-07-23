@@ -3,9 +3,6 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-//mui icons
-import SearchIcon from '@mui/icons-material/Search';
-
 type FeatureCardProps = {
     title: string;
     description: string;
@@ -15,8 +12,8 @@ export default function FeatureCard(feature: FeatureCardProps) {
     
     return(
         <>
-            <Paper sx={{padding: "25px", borderRadius: "20px", height: "100%"}}>
-                <Box sx={{marginBottom: "15px"}}>
+            <Paper sx={{p: 4, borderRadius: "20px", height: "100%"}}>
+                <Box sx={{mb: 2}}>
                     {feature.icon}
                 </Box>
                 

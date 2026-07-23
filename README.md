@@ -1,4 +1,4 @@
-S7 Football Talents is an AI-integrated football advanced analytics app. You can let AI help you analyze any player and get the most out of their data.
+S7ANALYZE is an AI-integrated football advanced analytics app. You can let AI help you analyze any player and get the most out of their data.
 
 Tech Stack
 (built with Vite)

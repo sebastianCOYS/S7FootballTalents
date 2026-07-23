@@ -1,18 +1,32 @@
-  const express = require("express");
-  const { GoogleGenAI } = require("@google/genai");
-  const router = express.Router();
+const express = require("express");
+const Groq = require("groq-sdk");
+const { createHttpError } = require("../utils/httpError");
+const { parseComparisonResponse, parsePlayerAnalysisResponse } = require("../utils/aiResponseValidation");
+const router = express.Router();
 
-  const ai = new GoogleGenAI({
-    apiKey: process.env.GEMINI_API_KEY,
-  });
+const groq = new Groq({
+  apiKey: process.env.GROQ_API_KEY,
+});
 
-  router.post("/", async (req, res, next) => {
-    
-    try {
-      const response = await ai.models.generateContent({
-        model: "gemini-3.1-flash-lite",
-        contents:
-          ` 
+function requirePlayer(value, parameter) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    throw createHttpError(400, "INVALID_REQUEST_BODY", `${parameter} must be a player object`, { parameter });
+  }
+}
+
+router.post("/", async (req, res, next) => {
+  try {
+    requirePlayer(req.body?.player, "player");
+
+    const response = await groq.chat.completions.create({
+      model: "llama-3.3-70b-versatile",
+      max_tokens: 500,
+      temperature: 0.1,
+      response_format: { type: "json_object" },
+      messages: [
+        {
+          role: "user",
+          content: `
 You are a skeptical football scouting analyst.
 
 Your job is not to praise the player. Your job is to extract useful scouting meaning from the statistical profile.
@@ -34,6 +48,7 @@ CORE ANALYSIS RULES:
 - Do not invent traits such as pace, mentality, leadership, strength, technique, injury history, tactical intelligence, or work rate.
 - Do not use hype language or scouting clichés.
 - Do not force positivity. If the profile is limited, say so clearly.
+- Mathematical accuracy rule: Goals > xG indicates finishing overperformance/conversion above expectation. Goals < xG indicates finishing underperformance or expected conversion.
 
 SECOND-ORDER INSIGHT EXAMPLES:
 - Fouls drawn + progressive carries may suggest a player who wins territory through contact and creates set-piece opportunities.
@@ -69,7 +84,7 @@ Return exactly this JSON object:
     {
       "label": string,
       "evidence": string,
-      "interpretation": string,
+      "interpretation": string
     }
   ],
   "roleFit": string,
@@ -127,13 +142,13 @@ DEFENDING:
 Recoveries: ${req.body.player.Recov}
 Tackles attempted: ${req.body.player.Tkl}
 Tackles won: ${req.body.player.TklW}
-Blocks: ${req.body.player.Blocks}
+  Blocks: ${req.body.player.Blocks_stats_defense}
 Interceptions: ${req.body.player.Int}
 Clearances: ${req.body.player.Clr}
 Errors: ${req.body.player.Err}
 
 FOULS AND DISCIPLINE:
-Fouls drawn: ${req.body.player.Fld}
+  Fouls drawn: ${req.body.player.Fld_stats_misc}
 Fouls committed: ${req.body.player.Fls}
 Yellow cards: ${req.body.player.CrdY}
 Red cards: ${req.body.player.CrdR}
@@ -154,47 +169,42 @@ Touches: ${req.body.player.Touches}
 Touches in attacking penalty area: ${req.body.player["Att Pen"]}
 Carries into penalty area: ${req.body.player.CPA}
 Aerial duels won: ${req.body.player.Won}
-Aerial duels lost: ${req.body.player.Lost}
+  Aerial duels lost: ${req.body.player.Lost_stats_misc}
 `,
-      });
+        },
+      ],
+    });
 
-      try {
-        const parsedAiResponse = JSON.parse(response.text.replace(/```json|```/g, "").trim());
-          res.json({ 
-       success: true,
-        data: {
-          profileTag: parsedAiResponse.profileTag || "unknown",
-          insights: parsedAiResponse.insights || [],
-          roleFit: parsedAiResponse.roleFit || "unknown",
-          summary: parsedAiResponse.summary || "unknown",
-          apiLimitReached: false,
-        }
-        
-      });
-      } catch {
-          res.json({ 
-        success: true,
-        data: {
-          profileTag: parsedAiResponse.profileTag || "unknown",
-          insights: parsedAiResponse.insights || [],
-          roleFit: parsedAiResponse.roleFit || "unknown",
-          summary: parsedAiResponse.summary || "unknown",
-          apiLimitReached: false,
-        }
-       
-      });
-      }
-    } catch (error) {
-      next(error);
-    }
-  });
-
-  router.post("/comparison", async(req, res, next) => {
     try {
-      const response = await ai.models.generateContent({
-        model: "gemini-3.1-flash-lite",
-        contents:
-                  ` 
+      const parsedAiResponse = parsePlayerAnalysisResponse(response.choices[0]?.message?.content);
+      res.json({
+        data: {
+          ...parsedAiResponse,
+          apiLimitReached: false,
+        },
+      });
+    } catch {
+      return next(createHttpError(502, "INVALID_AI_RESPONSE", "AI provider returned an invalid response"));
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post("/comparison", async (req, res, next) => {
+  try {
+    requirePlayer(req.body?.playerX, "playerX");
+    requirePlayer(req.body?.playerY, "playerY");
+
+    const response = await groq.chat.completions.create({
+      model: "llama-3.3-70b-versatile",
+      max_tokens: 500,
+      temperature: 0.1,
+      response_format: { type: "json_object" },
+      messages: [
+        {
+          role: "user",
+          content: `
 You are a skeptical football scouting analyst.
 
 Your job is not to praise the player. Your job is to extract useful scouting meaning from the statistical profile.
@@ -264,13 +274,13 @@ DEFENDING of Player X:
 Recoveries: ${req.body.playerX.Recov}
 Tackles attempted: ${req.body.playerX.Tkl}
 Tackles won: ${req.body.playerX.TklW}
-Blocks: ${req.body.playerX.Blocks}
+  Blocks: ${req.body.playerX.Blocks_stats_defense}
 Interceptions: ${req.body.playerX.Int}
 Clearances: ${req.body.playerX.Clr}
 Errors: ${req.body.playerX.Err}
 
 FOULS AND DISCIPLINE of Player X:
-Fouls drawn: ${req.body.playerX.Fld}
+  Fouls drawn: ${req.body.playerX.Fld_stats_misc}
 Fouls committed: ${req.body.playerX.Fls}
 Yellow cards: ${req.body.playerX.CrdY}
 Red cards: ${req.body.playerX.CrdR}
@@ -291,7 +301,7 @@ Touches: ${req.body.playerX.Touches}
 Touches in attacking penalty area: ${req.body.playerX["Att Pen"]}
 Carries into penalty area: ${req.body.playerX.CPA}
 Aerial duels won: ${req.body.playerX.Won}
-Aerial duels lost: ${req.body.playerX.Lost}
+  Aerial duels lost: ${req.body.playerX.Lost_stats_misc}
 
 PLAYER Y CONTEXT:
 Name: ${req.body.playerY.Player}
@@ -301,39 +311,39 @@ Age: ${req.body.playerY.Age}
 Minutes: ${req.body.playerY.Min}
 Matches played: ${req.body.playerY.MP}
 
-ATTACKING of Player X:
+ATTACKING of Player Y:
 Goals: ${req.body.playerY.Gls}
 Assists: ${req.body.playerY.Ast}
 xG: ${req.body.playerY.xG}
 non penalty xG: ${req.body.playerY.npxG}
 xA: ${req.body.playerY.xA}
 
-PROGRESSION of Player X:
+PROGRESSION of Player Y:
 Progressive passes: ${req.body.playerY.PrgP}
 Progressive carries: ${req.body.playerY.PrgC}
 Carries: ${req.body.playerY.Carries}
 Progressive passes received: ${req.body.playerY.PrgR}
 
-DEFENDING of Player X:
+DEFENDING of Player Y:
 Recoveries: ${req.body.playerY.Recov}
 Tackles attempted: ${req.body.playerY.Tkl}
 Tackles won: ${req.body.playerY.TklW}
-Blocks: ${req.body.playerY.Blocks}
+  Blocks: ${req.body.playerY.Blocks_stats_defense}
 Interceptions: ${req.body.playerY.Int}
 Clearances: ${req.body.playerY.Clr}
 Errors: ${req.body.playerY.Err}
 
-FOULS AND DISCIPLINE of Player X:
-Fouls drawn: ${req.body.playerY.Fld}
+FOULS AND DISCIPLINE of Player Y:
+  Fouls drawn: ${req.body.playerY.Fld_stats_misc}
 Fouls committed: ${req.body.playerY.Fls}
 Yellow cards: ${req.body.playerY.CrdY}
 Red cards: ${req.body.playerY.CrdR}
 
-POSSESSION SECURITY of Player X:
+POSSESSION SECURITY of Player Y:
 Miscontrols: ${req.body.playerY.Mis}
 Dispossessed: ${req.body.playerY.Dis}
 
-More statistics of Player X:
+More statistics of Player Y:
 Shots: ${req.body.playerY.Sh}
 Shots on target: ${req.body.playerY.SoT}
 Shot distance: ${req.body.playerY.Dist}
@@ -345,25 +355,26 @@ Touches: ${req.body.playerY.Touches}
 Touches in attacking penalty area: ${req.body.playerY["Att Pen"]}
 Carries into penalty area: ${req.body.playerY.CPA}
 Aerial duels won: ${req.body.playerY.Won}
-Aerial duels lost: ${req.body.playerY.Lost}
+  Aerial duels lost: ${req.body.playerY.Lost_stats_misc}
 `,
-          
-      });
-      try {
-        const parsedAiResponse = JSON.parse(response.text.replace(/```json|```/g, "").trim());
-          res.json({ 
-        success: true,
-        data: {
-        summary: parsedAiResponse.summary || "unknown",
-        apiLimitReached: false,
-        }
-        
-      })} catch(error) {
-        next(error);
-      }
-    } catch(error) {
-      next(error);
-    }
-  });
+        },
+      ],
+    });
 
-  module.exports = router;
+    try {
+      const parsedAiResponse = parseComparisonResponse(response.choices[0]?.message?.content);
+      res.json({
+        data: {
+          ...parsedAiResponse,
+          apiLimitReached: false,
+        },
+      });
+    } catch {
+      return next(createHttpError(502, "INVALID_AI_RESPONSE", "AI provider returned an invalid response"));
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+module.exports = router;

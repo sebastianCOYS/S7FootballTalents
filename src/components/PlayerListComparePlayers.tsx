@@ -9,22 +9,21 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Box, Typography, Divider } from '@mui/material';
+import { Alert, Box, Typography, Divider } from '@mui/material';
 //mui form
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 //Router
 import { Link } from 'react-router';
-import {CircularProgress} from '@mui/material';
 
 export default function ComparePlayers() {
     const [inputNameX, setInputNameX] = useState("");
     const [inputNameY, setInputNameY] = useState("");
     const [queryParamsX, setQueryParamsX] = useState({player: "", offset: 0});
     const [queryParamsY, setQueryParamsY] = useState({player: "", offset: 0});
-    const { players: playersX, isLoading: isLoadingX, hasPreviousPage: hasPreviousPageX, hasNextPage: hasNextPageX } = usePlayers(queryParamsX);
-    const { players: playersY, isLoading: isLoadingY, hasPreviousPage: hasPreviousPageY, hasNextPage: hasNextPageY } = usePlayers(queryParamsY);
+    const { players: playersX, error: errorX, isLoading: isLoadingX, hasPreviousPage: hasPreviousPageX, hasNextPage: hasNextPageX } = usePlayers(queryParamsX);
+    const { players: playersY, error: errorY, isLoading: isLoadingY, hasPreviousPage: hasPreviousPageY, hasNextPage: hasNextPageY } = usePlayers(queryParamsY);
     const [offsetForHookX, setOffsetForHookX] = useState(0);
     const [offsetForHookY, setOffsetForHookY] = useState(0);
     const [selectedPlayerXName, setSelectedPlayerXName] = useState("no player X selected");
@@ -77,7 +76,7 @@ export default function ComparePlayers() {
     if (isLoadingX || isLoadingY) return <>
       <Box sx={{display:"flex", flexDirection: "row", justifyContent: "center"}}>
                             <form onSubmit={handleSubmitX}>
-                          <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "10px", marginBottom: "10px", padding: "10px"}} spacing={2}>
+                          <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "10px", mb: 2, p: 2}} spacing={2}>
                             <TextField
                               label="Name of player X"
                               slotProps={{input: {style: {borderRadius: "20px"}}}}
@@ -90,7 +89,7 @@ export default function ComparePlayers() {
                           </Stack>
                         </form>
                                                 <form onSubmit={handleSubmitY}>
-                          <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "10px", marginBottom: "10px", padding: "10px"}} spacing={2}>
+                          <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "10px", mb: 2, p: 2}} spacing={2}>
                             <TextField
                               label="Name of player Y"
                               slotProps={{input: {style: {borderRadius: "20px"}}}}
@@ -111,7 +110,7 @@ export default function ComparePlayers() {
                 return (<>
                     <Box sx={{display:"flex", flexDirection: "row", justifyContent: "center"}}>
                         <form onSubmit={handleSubmitX}>
-                          <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "10px", marginBottom: "10px", padding: "10px"}} spacing={2}>
+                          <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "10px", mb: 2, p: 2}} spacing={2}>
                             <TextField
                               label="Name of player X"
                               slotProps={{input: {style: {borderRadius: "20px"}}}}
@@ -125,7 +124,7 @@ export default function ComparePlayers() {
                         </form>
 
                         <form onSubmit={handleSubmitY}>
-                          <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "10px", marginBottom: "10px", padding: "10px"}} spacing={2}>
+                          <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "10px", mb: 2, p: 2}} spacing={2}>
                             <TextField
                               label="Name of player Y"
                               slotProps={{input: {style: {borderRadius: "20px"}}}}
@@ -138,7 +137,17 @@ export default function ComparePlayers() {
                           </Stack>
                         </form>
                     </Box>
-<TableContainer sx={{borderRadius: "10px",display: "flex", flexDirection: "row", gap: 10}} component={Paper}>
+                    {errorX && (
+                      <Alert severity="error" sx={{ mb: 2 }}>
+                        Could not load Player X results: {errorX}
+                      </Alert>
+                    )}
+                    {errorY && (
+                      <Alert severity="error" sx={{ mb: 2 }}>
+                        Could not load Player Y results: {errorY}
+                      </Alert>
+                    )}
+<TableContainer sx={{borderRadius: "10px",display: "flex", flexDirection: "row", gap: 12}} component={Paper}>
       <Table sx={{ minWidth: 150 }} aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -160,7 +169,7 @@ export default function ComparePlayers() {
               </TableRow>
 
           ))}
-           {!isLoadingX && playersX.length === 0 && (
+           {!isLoadingX && !errorX && playersX.length === 0 && (
              <TableRow>
                 <TableCell colSpan={4} align="center">
                     No players found
@@ -181,8 +190,8 @@ export default function ComparePlayers() {
         
       </Table>
 
-      <Box sx={{padding: "10px"}}>
-          <Typography sx={{marginBottom: "10px"}} variant={"h6"}>{selectedPlayerXName}</Typography>
+      <Box sx={{p: 2}}>
+          <Typography sx={{mb: 2}} variant={"h6"}>{selectedPlayerXName}</Typography>
           <Divider></Divider>
           <Typography variant={"h6"}>{selectedPlayerYName}</Typography>
           {
@@ -211,7 +220,7 @@ export default function ComparePlayers() {
               </TableRow>
 
           ))}
-           {!isLoadingY && playersY.length === 0 && (
+           {!isLoadingY && !errorY && playersY.length === 0 && (
              <TableRow>
                 <TableCell colSpan={4} align="center">
                     No players found

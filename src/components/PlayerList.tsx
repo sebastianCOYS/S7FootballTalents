@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
 //hooks
 import usePlayers from '../hooks/usePlayers';
-import useAi from '../hooks/useAi';
-import { Box } from '@mui/material';
+import { Alert, Box } from '@mui/material';
 //mui table
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -17,36 +16,38 @@ import Stack from '@mui/material/Stack';
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 //Router
 import { Link } from 'react-router';
-import {CircularProgress} from '@mui/material';
 
 export default function PlayerList() {
     const [inputGoals, setInputGoals] = useState(0);
     const [inputAssists, setInputAssists] = useState(0);
     const [inputPosition, setInputPosition] = useState("ANY");
     const [inputMatchesPlayed, setInputMatchesPlayed] = useState(0);
+    const [inputAge, setInputAge] = useState(0);
+    const [inputProgressiveCarries, setInputProgressiveCarries] = useState(0);
+    const [inputProgressivePasses, setInputProgressivePasses] = useState(0);
     const [inputxG, setInputxG] = useState(0);
     const [inputxA, setInputxA] = useState(0);
-    const [queryParams, setQueryParams] = useState({gls: 0, ast: 0, offset: 0, position: "ANY", mp: 0, xG: 0, xA: 0});
-    const { players, isLoading, hasPreviousPage, hasNextPage } = usePlayers(queryParams);
+    const [queryParams, setQueryParams] = useState({gls: 0, ast: 0, offset: 0, position: "ANY", mp: 0, age: 0, prgc: 0, prgp: 0, xG: 0, xA: 0});
+    const { players, error, isLoading, hasPreviousPage, hasNextPage } = usePlayers(queryParams);
     const [offsetForHook, setOffsetForHook] = useState(0);
 
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-        setQueryParams({gls:inputGoals, ast: inputAssists, position: inputPosition, mp: inputMatchesPlayed, xG: inputxG, xA: inputxA, offset: 0});
+        setQueryParams({gls:inputGoals, ast: inputAssists, position: inputPosition, mp: inputMatchesPlayed, age: inputAge, prgc: inputProgressiveCarries, prgp: inputProgressivePasses, xG: inputxG, xA: inputxA, offset: 0});
         setOffsetForHook(0);
     }
     function handleNextPage() {
       setOffsetForHook(offsetForHook+10);
-      setQueryParams({gls: inputGoals, ast: inputAssists, position: inputPosition, mp: inputMatchesPlayed, xG: inputxG, xA: inputxA, offset: offsetForHook+10});
+      setQueryParams({gls: inputGoals, ast: inputAssists, position: inputPosition, mp: inputMatchesPlayed, age: inputAge, prgc: inputProgressiveCarries, prgp: inputProgressivePasses, xG: inputxG, xA: inputxA, offset: offsetForHook+10});
     }
     function handlePreviousPage() {
       setOffsetForHook(offsetForHook-10);
-      setQueryParams({gls: inputGoals, ast: inputAssists, position: inputPosition, mp: inputMatchesPlayed, xG: inputxG, xA: inputxA, offset: offsetForHook-10})
+      setQueryParams({gls: inputGoals, ast: inputAssists, position: inputPosition, mp: inputMatchesPlayed, age: inputAge, prgc: inputProgressiveCarries, prgp: inputProgressivePasses, xG: inputxG, xA: inputxA, offset: offsetForHook-10})
     }
     if (isLoading) return <>
-    <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "20px", marginBottom: "10px", padding: "10px"}}>
+    <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "20px", mb: 2, p: 2}}>
           <form onSubmit={handleSubmit}>
-            <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "20px", marginBottom: "10px", padding: "10px"}} spacing={2}>
+            <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "20px", mb: 2, p: 2}} spacing={2}>
                 <TextField slotProps={{input: {style: {borderRadius: "20px"}}}}
                   label="Goals"
                   value={inputGoals}
@@ -65,9 +66,9 @@ export default function PlayerList() {
     </>;
     return (
         <>
-        <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "20px", marginBottom: "10px", padding: "10px"}}>
+        <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "20px", mb: 2, p: 2}}>
           <form onSubmit={handleSubmit}>
-            <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', flexWrap: "wrap", alignItems: 'center', borderRadius: "20px", marginBottom: "10px", padding: "10px"}} spacing={2}>
+            <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', flexWrap: "wrap", alignItems: 'center', borderRadius: "20px", mb: 2, p: 2}} spacing={2}>
                 <TextField slotProps={{input: {style: {borderRadius: "20px"}}}}
                   label="Goals"
                   value={inputGoals}
@@ -82,6 +83,21 @@ export default function PlayerList() {
                   label="matches"
                   value={inputMatchesPlayed}
                   onChange={(e) => setInputMatchesPlayed(Number(e.target.value))}
+                />
+                <TextField slotProps={{input: {style: {borderRadius: "20px"}}}}
+                  label="Age"
+                  value={inputAge}
+                  onChange={(e) => setInputAge(Number(e.target.value))}
+                />
+                <TextField slotProps={{input: {style: {borderRadius: "20px"}}}}
+                  label="Progressive Carries"
+                  value={inputProgressiveCarries}
+                  onChange={(e) => setInputProgressiveCarries(Number(e.target.value))}
+                />
+                <TextField slotProps={{input: {style: {borderRadius: "20px"}}}}
+                  label="Progressive Passes"
+                  value={inputProgressivePasses}
+                  onChange={(e) => setInputProgressivePasses(Number(e.target.value))}
                 />
                  <TextField slotProps={{input: {style: {borderRadius: "20px"}}}}
                   inputProps={{ step: 0.1 }}
@@ -113,6 +129,12 @@ export default function PlayerList() {
           </form>
         </Stack>
 
+        {error && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            Could not load players: {error}
+          </Alert>
+        )}
+
         <TableContainer sx={{borderRadius: "20px"}} component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
@@ -138,7 +160,7 @@ export default function PlayerList() {
 
           ))}
             
-           {!isLoading && players.length === 0 && (
+           {!isLoading && !error && players.length === 0 && (
              <TableRow>
                 <TableCell colSpan={4} align="center">
                     No players found

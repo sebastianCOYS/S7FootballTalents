@@ -12,16 +12,15 @@ import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
-import {Box} from '@mui/material';
+import {Alert, Box} from '@mui/material';
 //Router
 import { Link } from 'react-router';
-import {CircularProgress} from '@mui/material';
 
 
 export default function PlayerList() {
     const [inputName, setInputName] = useState("");
     const [queryParams, setQueryParams] = useState({player: "", offset: 0});
-    const { players, isLoading, hasPreviousPage, hasNextPage } = usePlayers(queryParams);
+    const { players, error, isLoading, hasPreviousPage, hasNextPage } = usePlayers(queryParams);
     const [offsetForHook, setOffsetForHook] = useState(0);
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -39,7 +38,7 @@ export default function PlayerList() {
 
     if (isLoading) return <>
     <form onSubmit={handleSubmit}>
-          <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "10px", marginBottom: "10px", padding: "10px"}} spacing={2}>
+          <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "10px", mb: 2, p: 2}} spacing={2}>
             <TextField
               label="Player Name"
               slotProps={{input: {style: {borderRadius: "20px"}}}}
@@ -58,7 +57,7 @@ export default function PlayerList() {
         <>
         
         <form onSubmit={handleSubmit}>
-          <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "10px", marginBottom: "10px", padding: "10px"}} spacing={2}>
+          <Stack direction="row" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "10px", mb: 2, p: 2}} spacing={2}>
             <TextField
               label="Player Name"
               slotProps={{input: {style: {borderRadius: "20px"}}}}
@@ -70,6 +69,11 @@ export default function PlayerList() {
             </Button>
           </Stack>
         </form>
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          Could not load players: {error}
+        </Alert>
+      )}
       <TableContainer component={Paper} sx={{borderRadius: "10px"}}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
@@ -97,7 +101,7 @@ export default function PlayerList() {
               </TableRow>
 
           ))}
-           {!isLoading && players.length === 0 && (
+           {!isLoading && !error && players.length === 0 && (
              <TableRow>
                 <TableCell colSpan={4} align="center">
                     No players found

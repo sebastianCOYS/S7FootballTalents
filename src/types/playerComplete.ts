@@ -3,7 +3,7 @@
 
 
 //generated app.quicktype.io with some tweaks 
-export type playerCompleteType = {
+export type playerComplete = {
     Rk:                         number;
     Player:                     string;
     Nation:                     string;

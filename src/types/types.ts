@@ -1,30 +1,28 @@
-type insight = {
+export type Insight = {
     label: string,
     evidence: string,
     interpretation: string
 }
 
-export type AIApiResponse = 
-{
-  success: boolean,
+export type AIApiResponse =
+    {
         data: {
-          profileTag: string,
-          insights: insight[],
-          roleFit: string,
-          summary: string,
-          apiLimitReached: boolean,
+            profileTag: string,
+            insights: Insight[],
+            roleFit: string,
+            summary: string,
+            apiLimitReached: boolean,
         }
-}
-
-
-export type AIApiComparisonResponse = 
-{
- success: boolean,
-    data: {
-        summary: string,
-        apiLimitReached: boolean
     }
-}
+
+
+export type AIApiComparisonResponse =
+    {
+        data: {
+            summary: string,
+            apiLimitReached: boolean
+        }
+    }
 export type PlayerMinified = {
     Rk: number;
     Player: string;
