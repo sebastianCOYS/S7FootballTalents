@@ -7,12 +7,9 @@ async function fetchPlayer(rk: number, signal: AbortSignal): Promise<playerCompl
     if (!response.ok) {
         let message = "Failed to fetch player";
 
-        try {
-            const errorData = await response.json();
-            if (typeof errorData?.error?.message === "string") {
-                message = errorData.error.message;
-            }
-        } catch {
+        const errorData = await response.json().catch(() => null);
+        if (typeof errorData?.error?.message === "string") {
+            message = errorData.error.message;
         }
 
         throw new Error(message);
