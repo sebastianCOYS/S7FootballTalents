@@ -14,11 +14,6 @@ import { Container } from "@mui/material";
 import PlayerGeneralStats from "../components/PlayerGeneralStats";
 import PlayerRadarChart from "../components/PlayerRadarChart";
 import { Divider } from "@mui/material";
-const navItems = [
-    { page: "Search by name", link: "/name_search" },
-    { page: "Advanced Search", link: "/advanced_search" },
-    { page: "Compare players", link: "/compare_players" },
-]
 
 export default function PlayerPage() {
 

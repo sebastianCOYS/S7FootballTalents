@@ -12,11 +12,6 @@ import { CircularProgress } from "@mui/material";
 import { Stack } from "@mui/material";
 import PlayersRadarChart from "../components/PlayersRadarChart";
 import "./styles/compare.css";
-const navItems = [
-    { page: "Search by name", link: "/name_search" },
-    { page: "Advanced Search", link: "/advanced_search" },
-    { page: "Compare players", link: "/compare_players" },
-]
 
 export default function PlayerComparisonPage() {
     const { playerXRk, playerYRk } = useParams();
