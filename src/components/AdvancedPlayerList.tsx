@@ -17,7 +17,7 @@ import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 //Router
 import { Link } from 'react-router';
 
-export default function PlayerList() {
+export default function AdvancedPlayerList() {
   const [inputGoals, setInputGoals] = useState(0);
   const [inputAssists, setInputAssists] = useState(0);
   const [inputPosition, setInputPosition] = useState("ANY");
@@ -44,31 +44,11 @@ export default function PlayerList() {
     setOffsetForHook(offsetForHook - 10);
     setQueryParams({ gls: inputGoals, ast: inputAssists, position: inputPosition, mp: inputMatchesPlayed, age: inputAge, prgc: inputProgressiveCarries, prgp: inputProgressivePasses, xG: inputxG, xA: inputxA, offset: offsetForHook - 10 })
   }
-  if (isLoading) return <>
-    <Stack direction="row" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "20px", mb: 2, p: 2 }}>
-      <form onSubmit={handleSubmit}>
-        <Stack direction="row" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "20px", mb: 2, p: 2 }} spacing={2}>
-          <TextField slotProps={{ input: { style: { borderRadius: "20px" } } }}
-            label="Goals"
-            value={inputGoals}
-            onChange={(e) => setInputGoals(Number(e.target.value))}
-          />
-          <TextField slotProps={{ input: { style: { borderRadius: "20px" } } }}
-            label="Assists"
-            value={inputAssists}
-            onChange={(e) => setInputAssists(Number(e.target.value))}
-          />
-          <Button sx={{ borderRadius: "20px" }} type="submit" variant="contained"> Search</Button>
-        </Stack>
-      </form>
-    </Stack>
-    <Box sx={{ height: "653.667px", backgroundColor: "#1e1e1e" }}></Box>
-  </>;
   return (
     <>
       <Stack direction="row" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "20px", mb: 2, p: 2 }}>
         <form onSubmit={handleSubmit}>
-          <Stack direction="row" sx={{ display: 'flex', justifyContent: 'center', flexWrap: "wrap", alignItems: 'center', borderRadius: "20px", mb: 2, p: 2 }} spacing={2}>
+          <Stack direction="row" sx={{ display: 'flex', justifyContent: 'center', flexWrap: "wrap", alignItems: 'center', borderRadius: "20px", mb: 2, p: 2, gap: 2 }} spacing={2}>
             <TextField slotProps={{ input: { style: { borderRadius: "20px" } } }}
               label="Goals"
               value={inputGoals}
@@ -129,57 +109,63 @@ export default function PlayerList() {
         </form>
       </Stack>
 
-      {error && (
-        <Alert severity="error" sx={{ mb: 2 }}>
-          Could not load players: {error}
-        </Alert>
+      {isLoading ? (
+        <Box sx={{ height: "653.667px", backgroundColor: "#1e1e1e", borderRadius: "20px" }} />
+      ) : (
+        <>
+          {error && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              Could not load players: {error}
+            </Alert>
+          )}
+
+          <TableContainer sx={{ borderRadius: "20px" }} component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Player</TableCell>
+                  <TableCell align="right">Age</TableCell>
+                  <TableCell align="right">squad</TableCell>
+                  <TableCell align="right">rk</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+
+                {players.map((player) => (
+
+                  <TableRow key={player.Rk} to={"/player/" + player.Rk} component={Link}>
+                    <TableCell component="th" scope="row">
+                      {player.Player}
+                    </TableCell>
+                    <TableCell align="right">{player.Age}</TableCell>
+                    <TableCell align="right">{player.Squad}</TableCell>
+                    <TableCell align="right">{player.Rk}</TableCell>
+                  </TableRow>
+
+                ))}
+
+                {!isLoading && !error && players.length === 0 && (
+                  <TableRow>
+                    <TableCell colSpan={4} align="center">
+                      No players found
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+              <TableBody>
+                <TableRow>
+                  <TableCell colSpan={4} sx={{ width: "100%" }}>
+                    <Box sx={{ display: "flex", flexDirection: "row", width: "100%", justifyContent: "space-between" }}>
+                      <Button sx={{ alignSelf: "left" }} disabled={!hasPreviousPage} onClick={handlePreviousPage}>previous page</Button>
+                      <Button sx={{ alignSelf: "right" }} disabled={!hasNextPage} onClick={handleNextPage}>next page</Button>
+                    </Box>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </>
       )}
-
-      <TableContainer sx={{ borderRadius: "20px" }} component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Player</TableCell>
-              <TableCell align="right">Age</TableCell>
-              <TableCell align="right">squad</TableCell>
-              <TableCell align="right">rk</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-
-            {players.map((player) => (
-
-              <TableRow key={player.Rk} to={"/player/" + player.Rk} component={Link}>
-                <TableCell component="th" scope="row">
-                  {player.Player}
-                </TableCell>
-                <TableCell align="right">{player.Age}</TableCell>
-                <TableCell align="right">{player.Squad}</TableCell>
-                <TableCell align="right">{player.Rk}</TableCell>
-              </TableRow>
-
-            ))}
-
-            {!isLoading && !error && players.length === 0 && (
-              <TableRow>
-                <TableCell colSpan={4} align="center">
-                  No players found
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-          <TableBody>
-            <TableRow>
-              <TableCell colSpan={4} sx={{ width: "100%" }}>
-                <Box sx={{ display: "flex", flexDirection: "row", width: "100%", justifyContent: "space-between" }}>
-                  <Button sx={{ alignSelf: "left" }} disabled={!hasPreviousPage} onClick={handlePreviousPage}>previous page</Button>
-                  <Button sx={{ alignSelf: "right" }} disabled={!hasNextPage} onClick={handleNextPage}>next page</Button>
-                </Box>
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
 
 
     </>

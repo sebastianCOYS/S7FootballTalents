@@ -1,7 +1,6 @@
 import { useParams } from "react-router";
 import usePlayer from "../hooks/usePlayer";
 import { CircularProgress, Typography } from "@mui/material"
-import Header from "../components/Header";
 import { Paper } from "@mui/material";
 import useAi from "../hooks/useAi";
 import { Button } from "@mui/material";
@@ -27,9 +26,9 @@ export default function PlayerPage() {
     const { player, error, isLoading } = usePlayer(Number(playerRk));
     const { summary, roleFit, profileTag, insights, isLoading: isLoadingAi, error: errorAi, apiLimitReached, generateAiPlayerSummary } = useAi(player);
 
-    if (isLoading) return <><Header navItems={navItems} /><Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100vw", height: "100vh" }}><CircularProgress size={80} /></Box></>;
-    if (error) return <><Header navItems={navItems} /><Alert severity="error">Something went wrong</Alert></>;
-    if (player === null) return <><Header navItems={navItems} /><Alert severity="error">No player found...</Alert></>;
+    if (isLoading) return <><Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100vw", height: "100vh" }}><CircularProgress size={80} /></Box></>;
+    if (error) return <><Alert severity="error">Something went wrong</Alert></>;
+    if (player === null) return <><Alert severity="error">No player found...</Alert></>;
     return (<>
         <Container maxWidth="xl">
             <Button sx={{ width: "100%", my: 2, borderRadius: "20px" }} disabled={apiLimitReached ? apiLimitReached : isLoadingAi} variant="contained" color="warning" onClick={generateAiPlayerSummary}>{isLoadingAi ? "loading..." : "AI analyze player"}</Button>
@@ -38,7 +37,7 @@ export default function PlayerPage() {
             </Paper>
 
 
-            <Paper sx={{ display: "flex", flexDirection: "row", width: "100%", minHeight: "100px", borderRadius: "20px", py: 2, marginTop: 4 }}>
+            <Paper sx={{ display: "flex", flexDirection: { xs: "column", sm: "column", md: "row" }, width: "100%", minHeight: "100px", borderRadius: "20px", py: 2, marginTop: 4 }}>
                 {insights?.map((insight, index) => {
                     return (
                         <Box key={index}>
@@ -50,9 +49,9 @@ export default function PlayerPage() {
                     )
                 })}
             </Paper>
-            <Box sx={{ display: "flex", my: 4 }}>
+            <Box sx={{ display: "flex", my: 4, flexWrap: "wrap", justifyContent: "center" }}>
                 <Typography variant="h3" sx={{ m: 2 }}>Percentiles</Typography>
-                <Box sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap", gap: 2 }}>
+                <Box sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap", gap: 2, justifyContent: "center" }}>
                     <Paper sx={{ minWidth: "200px", p: 2, borderRadius: "20px" }}><Typography color="primary.light">Goals/90</Typography><Typography>{player.gls_percentile}th</Typography></Paper>
                     <Paper sx={{ minWidth: "200px", p: 2, borderRadius: "20px" }}> <Typography color="primary.light">Assists/90</Typography><Typography>{player.ast_percentile}th</Typography></Paper>
                     <Paper sx={{ minWidth: "200px", p: 2, borderRadius: "20px" }}><Typography color="primary.light">Progressive Carries/90</Typography><Typography>{player.prgc_percentile}th</Typography></Paper>

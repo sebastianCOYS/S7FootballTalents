@@ -3,7 +3,7 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { MemoryRouter, useLocation } from "react-router";
 import Header from "./Header";
-import AdvancedPlayerList from "./PlayerList";
+import AdvancedPlayerList from "./AdvancedPlayerList";
 import ComparePlayerLists from "./PlayerListComparePlayers";
 import NamePlayerList from "./PlayerListSearchName";
 
