@@ -3,7 +3,6 @@ import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { playerComplete } from "../types/playerComplete";
 import PlayerGoalkeepingStats from "./PlayerGoalkeepingStats";
-import PlayerRadarChart from "./PlayerRadarChart";
 import PlayersRadarChart from "./PlayersRadarChart";
 
 vi.mock("@mui/x-charts", () => ({
@@ -54,19 +53,26 @@ function renderedRadarProps() {
 
 describe("analytics field mappings", () => {
     it("keeps offensive radar labels aligned with their values", () => {
-        render(<PlayerRadarChart player={player} chartType="offensive" />);
+        render(<PlayersRadarChart players={[player]} chartType="offensive" />);
 
         const props = renderedRadarProps();
-        expect(props.series[0].data).toHaveLength(props.radar.metrics.length);
-        expect(props.series[0].data.slice(-3)).toEqual([11, 12, 13]);
-        expect(props.radar.metrics.slice(-3)).toEqual(["key passes", "fouls Drawn", "crosses"]);
+        expect(props.series[0].data).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
+        expect(props.radar.metrics).toEqual([
+            "Goals",
+            "Goals-PK",
+            "Assists",
+            "xG",
+            "npxG",
+            "xAG",
+            "G+A",
+            "Carries",
+            "Progressive p.",
+            "Progressive c.",
+            "key passes",
+        ]);
     });
 
     it("uses clean sheets instead of corner kicks in goalkeeper radars", () => {
-        render(<PlayerRadarChart player={player} chartType="goalkeeping" />);
-        expect(renderedRadarProps().series[0].data[4]).toBe(5);
-
-        cleanup();
         render(<PlayersRadarChart players={[player]} chartType="goalkeeping" />);
         expect(renderedRadarProps().series[0].data[4]).toBe(5);
     });
