@@ -16,7 +16,7 @@ export default function Layout() {
 
         <>
             <Header navItems={navItems} />
-            <Container maxWidth="xl">
+            <Container maxWidth="xl" sx={{ px: { xs: 1, md: 2 } }}>
                 <Outlet />
             </Container>
             <Footer />

@@ -1,9 +1,9 @@
 import { Typography } from '@mui/material';
-import { Paper } from '@mui/material';
+import { Paper, Box } from '@mui/material';
 import type { playerComplete } from '../types/playerComplete';
 export default function PlayerOffensiveStats(player: playerComplete) {
     return (
-        <>
+        <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
             <Paper sx={{ borderRadius: "20px", p: 2 }} variant="outlined" className="item full_width">
                 <Typography variant="h3" sx={{ textAlign: "left" }} >Attacking</Typography>
             </Paper>
@@ -63,6 +63,6 @@ export default function PlayerOffensiveStats(player: playerComplete) {
                 <Typography color="textSecondary" className="label">sca90 </Typography>
                 <Typography>{player.SCA90}</Typography>
             </Paper>
-        </>
+        </Box>
     );
 }

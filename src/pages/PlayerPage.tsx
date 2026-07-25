@@ -12,7 +12,7 @@ import PlayerGoalkeepingStats from "../components/PlayerGoalkeepingStats";
 import { Alert } from "@mui/material";
 import { Container } from "@mui/material";
 import PlayerGeneralStats from "../components/PlayerGeneralStats";
-import PlayerRadarChart from "../components/PlayerRadarChart";
+import PlayersRadarChart from "../components/PlayersRadarChart";
 import { Divider } from "@mui/material";
 
 export default function PlayerPage() {
@@ -25,45 +25,43 @@ export default function PlayerPage() {
     if (error) return <><Alert severity="error">Something went wrong</Alert></>;
     if (player === null) return <><Alert severity="error">No player found...</Alert></>;
     return (<>
-        <Container maxWidth="xl">
-            <Button sx={{ width: "100%", my: 2, borderRadius: "20px" }} disabled={apiLimitReached ? apiLimitReached : isLoadingAi} variant="contained" color="warning" onClick={generateAiPlayerSummary}>{isLoadingAi ? "loading..." : "AI analyze player"}</Button>
-            <Paper sx={{ p: 4, borderRadius: "20px" }}>
-                <Typography sx={{ minHeight: "50px" }}>{summary ? summary : errorAi}</Typography>
-            </Paper>
+        <Button sx={{ width: "100%", my: 2, borderRadius: "20px" }} disabled={apiLimitReached ? apiLimitReached : isLoadingAi} variant="contained" color="warning" onClick={generateAiPlayerSummary}>{isLoadingAi ? "loading..." : "AI analyze player"}</Button>
+        <Paper sx={{ p: 4, borderRadius: "20px" }}>
+            <Typography sx={{ minHeight: "50px" }}>{summary ? summary : errorAi}</Typography>
+        </Paper>
 
 
-            <Paper sx={{ display: "flex", flexDirection: { xs: "column", sm: "column", md: "row" }, width: "100%", minHeight: "100px", borderRadius: "20px", py: 2, marginTop: 4 }}>
-                {insights?.map((insight, index) => {
-                    return (
-                        <Box key={index}>
-                            <Box sx={{ p: 2 }}><strong><Typography variant='h5'>{insight.label}</Typography></strong></Box>
-                            <Divider></Divider>
-                            <Box sx={{ p: 2 }}>{insight.evidence}</Box>
-                            <Box sx={{ p: 2 }}>{insight.interpretation}</Box>
-                        </Box>
-                    )
-                })}
-            </Paper>
-            <Box sx={{ display: "flex", my: 4, flexWrap: "wrap", justifyContent: "center" }}>
-                <Typography variant="h3" sx={{ m: 2 }}>Percentiles</Typography>
-                <Box sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap", gap: 2, justifyContent: "center" }}>
-                    <Paper sx={{ minWidth: "200px", p: 2, borderRadius: "20px" }}><Typography color="primary.light">Goals/90</Typography><Typography>{player.gls_percentile}th</Typography></Paper>
-                    <Paper sx={{ minWidth: "200px", p: 2, borderRadius: "20px" }}> <Typography color="primary.light">Assists/90</Typography><Typography>{player.ast_percentile}th</Typography></Paper>
-                    <Paper sx={{ minWidth: "200px", p: 2, borderRadius: "20px" }}><Typography color="primary.light">Progressive Carries/90</Typography><Typography>{player.prgc_percentile}th</Typography></Paper>
-                    <Paper sx={{ minWidth: "200px", p: 2, borderRadius: "20px" }}><Typography color="primary.light">Progressive Passes/90</Typography><Typography>{player.prgp_percentile}th</Typography></Paper>
-                    <Paper sx={{ minWidth: "200px", p: 2, borderRadius: "20px" }}> <Typography color="primary.light">expected Goals/90</Typography><Typography>{player.xg_percentile}th</Typography></Paper>
-                </Box>
+        <Paper sx={{ display: "flex", flexDirection: { xs: "column", sm: "column", md: "row" }, width: "100%", minHeight: "100px", borderRadius: "20px", py: 2, marginTop: 4 }}>
+            {insights?.map((insight, index) => {
+                return (
+                    <Box key={index}>
+                        <Box sx={{ p: 2 }}><strong><Typography variant='h5'>{insight.label}</Typography></strong></Box>
+                        <Divider></Divider>
+                        <Box sx={{ p: 2 }}>{insight.evidence}</Box>
+                        <Box sx={{ p: 2 }}>{insight.interpretation}</Box>
+                    </Box>
+                )
+            })}
+        </Paper>
+        <Box sx={{ display: "flex", my: 4, flexWrap: "wrap", justifyContent: "center" }}>
+            <Typography variant="h3" sx={{ m: 2 }}>Percentiles</Typography>
+            <Box sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap", gap: 2, justifyContent: "center" }}>
+                <Paper sx={{ minWidth: "200px", p: 2, borderRadius: "20px" }}><Typography color="primary.light">Goals/90</Typography><Typography>{player.gls_percentile}th</Typography></Paper>
+                <Paper sx={{ minWidth: "200px", p: 2, borderRadius: "20px" }}> <Typography color="primary.light">Assists/90</Typography><Typography>{player.ast_percentile}th</Typography></Paper>
+                <Paper sx={{ minWidth: "200px", p: 2, borderRadius: "20px" }}><Typography color="primary.light">Progressive Carries/90</Typography><Typography>{player.prgc_percentile}th</Typography></Paper>
+                <Paper sx={{ minWidth: "200px", p: 2, borderRadius: "20px" }}><Typography color="primary.light">Progressive Passes/90</Typography><Typography>{player.prgp_percentile}th</Typography></Paper>
+                <Paper sx={{ minWidth: "200px", p: 2, borderRadius: "20px" }}> <Typography color="primary.light">expected Goals/90</Typography><Typography>{player.xg_percentile}th</Typography></Paper>
             </Box>
-            <Stack sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap", py: 4 }}>
-                <PlayerRadarChart player={player} chartType="offensive" />
-                <PlayerRadarChart player={player} chartType="defensive" />
-                {player.Pos === "GK" && <PlayerRadarChart player={player} chartType="goalkeeping" />}
-            </Stack>
-            <PlayerGeneralStats player={player} roleFit={roleFit} profileTag={profileTag} insights={insights} />
-            {player.Pos === "GK" && <PlayerGoalkeepingStats {...player} />}
-            <PlayerOffensiveStats {...player} />
-            <PlayerDefensiveStats {...player} />
-        </Container>
+        </Box>
+        <Stack sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap", py: 4 }}>
+            <PlayersRadarChart players={[player]} chartType="offensive" />
+            <PlayersRadarChart players={[player]} chartType="defensive" />
+            {player.Pos === "GK" && <PlayersRadarChart players={[player]} chartType="goalkeeping" />}
+        </Stack>
+        <PlayerGeneralStats player={player} roleFit={roleFit} profileTag={profileTag} insights={insights} />
+        {player.Pos === "GK" && <PlayerGoalkeepingStats {...player} />}
+        <PlayerOffensiveStats {...player} />
+        <PlayerDefensiveStats {...player} />
     </>
     )
 }

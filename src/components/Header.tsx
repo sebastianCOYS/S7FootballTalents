@@ -40,8 +40,8 @@ export default function Header({ navItems }: HeaderProps) {
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
   return (
-    <AppBar position="static" sx={{ p: 2 }}>
-      <Container maxWidth="xl">
+    <AppBar position="static" sx={{ py: 2, px: { xs: 1, md: 2 } }}>
+      <Container maxWidth="xl" disableGutters>
         <Toolbar disableGutters>
           <MenuItem component={Link} to={"/"} sx={{ textDecoration: "none", borderRadius: "20px" }}>
             <Typography sx={{ fontSize: "2rem" }}><strong>S7</strong></Typography>
