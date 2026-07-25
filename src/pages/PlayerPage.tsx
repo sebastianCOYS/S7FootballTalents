@@ -10,7 +10,6 @@ import PlayerOffensiveStats from "../components/PlayerOffensiveStats";
 import PlayerDefensiveStats from "../components/PlayerDefensiveStats";
 import PlayerGoalkeepingStats from "../components/PlayerGoalkeepingStats";
 import { Alert } from "@mui/material";
-import { Container } from "@mui/material";
 import PlayerGeneralStats from "../components/PlayerGeneralStats";
 import PlayersRadarChart from "../components/PlayersRadarChart";
 import { Divider } from "@mui/material";
