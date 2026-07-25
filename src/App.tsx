@@ -26,7 +26,7 @@ const router = createBrowserRouter([
       { path: "/advanced_search", element: <AdvancedSearch /> },
       { path: "/compare_players", element: <ComparePlayers /> },
       { path: "/player/:playerRk", element: <PlayerPage /> },
-      { path: "/playerComparisonPage/:playerXRk/:playerYRk", element: <PlayerComparisonPage /> },
+      { path: "/player_comparison/:playerXRk/:playerYRk", element: <PlayerComparisonPage /> },
       { path: "*", element: <NotFoundPage /> },
     ],
   },

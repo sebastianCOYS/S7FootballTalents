@@ -18,14 +18,12 @@ import Stack from '@mui/material/Stack';
 import { Link } from 'react-router';
 
 export default function ComparePlayers() {
-  const [inputNameX, setInputNameX] = useState("");
-  const [inputNameY, setInputNameY] = useState("");
-  const [queryParamsX, setQueryParamsX] = useState({ player: "", offset: 0 });
-  const [queryParamsY, setQueryParamsY] = useState({ player: "", offset: 0 });
-  const { players: playersX, error: errorX, isLoading: isLoadingX, hasPreviousPage: hasPreviousPageX, hasNextPage: hasNextPageX } = usePlayers(queryParamsX);
-  const { players: playersY, error: errorY, isLoading: isLoadingY, hasPreviousPage: hasPreviousPageY, hasNextPage: hasNextPageY } = usePlayers(queryParamsY);
-  const [offsetForHookX, setOffsetForHookX] = useState(0);
-  const [offsetForHookY, setOffsetForHookY] = useState(0);
+  const [draftFiltersX, setDraftFiltersX] = useState({ player: "", offset: 0 });
+  const [draftFiltersY, setDraftFiltersY] = useState({ player: "", offset: 0 });
+  const [appliedFiltersX, setAppliedFiltersX] = useState({ player: "", offset: 0 });
+  const [appliedFiltersY, setAppliedFiltersY] = useState({ player: "", offset: 0 });
+  const { players: playersX, error: errorX, isLoading: isLoadingX, hasPreviousPage: hasPreviousPageX, hasNextPage: hasNextPageX } = usePlayers(appliedFiltersX);
+  const { players: playersY, error: errorY, isLoading: isLoadingY, hasPreviousPage: hasPreviousPageY, hasNextPage: hasNextPageY } = usePlayers(appliedFiltersY);
   const [selectedPlayerXName, setSelectedPlayerXName] = useState("no player X selected");
   const [selectedPlayerXRk, setSelectedPlayerXRk] = useState<null | number>(null);
   const [selectedPlayerYName, setSelectedPlayerYName] = useState("no player Y selected");
@@ -34,33 +32,27 @@ export default function ComparePlayers() {
 
   function handleSubmitX(e: React.FormEvent) {
     e.preventDefault();
-    setQueryParamsX({ player: inputNameX, offset: 0 });
-    setOffsetForHookX(0);
+    setAppliedFiltersX({ ...draftFiltersX, offset: 0 });
   }
   function handleSubmitY(e: React.FormEvent) {
     e.preventDefault();
-    setQueryParamsY({ player: inputNameY, offset: 0 });
-    setOffsetForHookY(0);
+    setAppliedFiltersY({ ...draftFiltersY, offset: 0 });
   }
 
 
   function handleNextPageX() {
-    setOffsetForHookX(offsetForHookX + 10);
-    setQueryParamsX({ player: inputNameX, offset: offsetForHookX + 10 })
+    setAppliedFiltersX(previous => ({ ...previous, offset: previous.offset + 10 }));
   }
 
   function handleNextPageY() {
-    setOffsetForHookY(offsetForHookY + 10);
-    setQueryParamsY({ player: inputNameY, offset: offsetForHookY + 10 })
+    setAppliedFiltersY(previous => ({ ...previous, offset: previous.offset + 10 }));
   }
   function handlePreviousPageX() {
-    setOffsetForHookX(offsetForHookX - 10);
-    setQueryParamsX({ player: inputNameX, offset: offsetForHookX - 10 })
+    setAppliedFiltersX(previous => ({ ...previous, offset: Math.max(0, previous.offset - 10) }));
   }
 
   function handlePreviousPageY() {
-    setOffsetForHookY(offsetForHookY - 10);
-    setQueryParamsY({ player: inputNameY, offset: offsetForHookY - 10 })
+    setAppliedFiltersY(previous => ({ ...previous, offset: Math.max(0, previous.offset - 10) }));
   }
 
   function handlePlayerXSelected(player: PlayerMinified) {
@@ -80,8 +72,8 @@ export default function ComparePlayers() {
           <TextField
             label="Name of player X"
             slotProps={{ input: { style: { borderRadius: "20px" } } }}
-            value={inputNameX}
-            onChange={(e) => setInputNameX(e.target.value)}
+            value={draftFiltersX.player}
+            onChange={(e) => setDraftFiltersX(previous => ({ ...previous, player: e.target.value }))}
           />
           <Button sx={{ borderRadius: "20px" }} type="submit" variant="contained">
             Search
@@ -93,8 +85,8 @@ export default function ComparePlayers() {
           <TextField
             label="Name of player Y"
             slotProps={{ input: { style: { borderRadius: "20px" } } }}
-            value={inputNameY}
-            onChange={(e) => setInputNameY(e.target.value)}
+            value={draftFiltersY.player}
+            onChange={(e) => setDraftFiltersY(previous => ({ ...previous, player: e.target.value }))}
           />
           <Button sx={{ borderRadius: "20px" }} type="submit" variant="contained">
             Search
@@ -114,8 +106,8 @@ export default function ComparePlayers() {
           <TextField
             label="Name of player X"
             slotProps={{ input: { style: { borderRadius: "20px" } } }}
-            value={inputNameX}
-            onChange={(e) => setInputNameX(e.target.value)}
+            value={draftFiltersX.player}
+            onChange={(e) => setDraftFiltersX(previous => ({ ...previous, player: e.target.value }))}
           />
           <Button sx={{ borderRadius: "20px" }} type="submit" variant="contained">
             Search
@@ -128,8 +120,8 @@ export default function ComparePlayers() {
           <TextField
             label="Name of player Y"
             slotProps={{ input: { style: { borderRadius: "20px" } } }}
-            value={inputNameY}
-            onChange={(e) => setInputNameY(e.target.value)}
+            value={draftFiltersY.player}
+            onChange={(e) => setDraftFiltersY(previous => ({ ...previous, player: e.target.value }))}
           />
           <Button sx={{ borderRadius: "20px" }} type="submit" variant="contained">
             Search
@@ -196,7 +188,7 @@ export default function ComparePlayers() {
         <Typography variant={"h6"}>{selectedPlayerYName}</Typography>
         {
           selectedPlayerXRk !== null && selectedPlayerYRk !== null &&
-          <Button color='warning' component={Link} to={"/playerComparisonPage/" + selectedPlayerXRk + "/" + selectedPlayerYRk}>Compare Players</Button>
+          <Button color='warning' component={Link} to={"/player_comparison/" + selectedPlayerXRk + "/" + selectedPlayerYRk}>Compare Players</Button>
         }
       </Box>
       <Table sx={{ minWidth: 150 }} aria-label="simple table">

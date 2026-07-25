@@ -18,22 +18,19 @@ import { Link } from 'react-router';
 
 
 export default function PlayerList() {
-  const [inputName, setInputName] = useState("");
-  const [queryParams, setQueryParams] = useState({ player: "", offset: 0 });
-  const { players, error, isLoading, hasPreviousPage, hasNextPage } = usePlayers(queryParams);
-  const [offsetForHook, setOffsetForHook] = useState(0);
+  const [draftFilters, setDraftFilters] = useState({ player: "", offset: 0 });
+  const [appliedFilters, setAppliedFilters] = useState({ player: "", offset: 0 });
+  const { players, error, isLoading, hasPreviousPage, hasNextPage } = usePlayers(appliedFilters);
+
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setQueryParams({ player: inputName, offset: 0 });
-    setOffsetForHook(0);
+    setAppliedFilters({ ...draftFilters, offset: 0 });
   }
   function handleNextPage() {
-    setOffsetForHook(offsetForHook + 10);
-    setQueryParams({ player: inputName, offset: offsetForHook + 10 })
+    setAppliedFilters(previous => ({ ...previous, offset: previous.offset + 10 }));
   }
   function handlePreviousPage() {
-    setOffsetForHook(offsetForHook - 10);
-    setQueryParams({ player: inputName, offset: offsetForHook - 10 })
+    setAppliedFilters(previous => ({ ...previous, offset: Math.max(0, previous.offset - 10) }));
   }
 
   if (isLoading) return <>
@@ -42,8 +39,8 @@ export default function PlayerList() {
         <TextField
           label="Player Name"
           slotProps={{ input: { style: { borderRadius: "20px" } } }}
-          value={inputName}
-          onChange={(e) => setInputName(e.target.value)}
+          value={draftFilters.player}
+          onChange={(e) => setDraftFilters(previous => ({ ...previous, player: e.target.value }))}
         />
         <Button sx={{ borderRadius: "20px" }} type="submit" variant="contained">
           Search
@@ -61,8 +58,8 @@ export default function PlayerList() {
           <TextField
             label="Player Name"
             slotProps={{ input: { style: { borderRadius: "20px" } } }}
-            value={inputName}
-            onChange={(e) => setInputName(e.target.value)}
+            value={draftFilters.player}
+            onChange={(e) => setDraftFilters(previous => ({ ...previous, player: e.target.value }))}
           />
           <Button sx={{ borderRadius: "20px" }} type="submit" variant="contained">
             Search

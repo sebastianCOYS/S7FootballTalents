@@ -17,32 +17,21 @@ import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 //Router
 import { Link } from 'react-router';
 
+
 export default function AdvancedPlayerList() {
-  const [inputGoals, setInputGoals] = useState(0);
-  const [inputAssists, setInputAssists] = useState(0);
-  const [inputPosition, setInputPosition] = useState("ANY");
-  const [inputMatchesPlayed, setInputMatchesPlayed] = useState(0);
-  const [inputAge, setInputAge] = useState(0);
-  const [inputProgressiveCarries, setInputProgressiveCarries] = useState(0);
-  const [inputProgressivePasses, setInputProgressivePasses] = useState(0);
-  const [inputxG, setInputxG] = useState(0);
-  const [inputxA, setInputxA] = useState(0);
-  const [queryParams, setQueryParams] = useState({ gls: 0, ast: 0, offset: 0, position: "ANY", mp: 0, age: 0, prgc: 0, prgp: 0, xG: 0, xA: 0 });
-  const { players, error, isLoading, hasPreviousPage, hasNextPage } = usePlayers(queryParams);
-  const [offsetForHook, setOffsetForHook] = useState(0);
+  const [draftFilters, setDraftFilters] = useState({ gls: 0, ast: 0, offset: 0, position: "ANY", mp: 0, age: 0, prgc: 0, prgp: 0, xG: 0, xA: 0 });
+  const [appliedFilters, setAppliedFilters] = useState({ gls: 0, ast: 0, offset: 0, position: "ANY", mp: 0, age: 0, prgc: 0, prgp: 0, xG: 0, xA: 0 });
+  const { players, error, isLoading, hasPreviousPage, hasNextPage } = usePlayers(appliedFilters);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setQueryParams({ gls: inputGoals, ast: inputAssists, position: inputPosition, mp: inputMatchesPlayed, age: inputAge, prgc: inputProgressiveCarries, prgp: inputProgressivePasses, xG: inputxG, xA: inputxA, offset: 0 });
-    setOffsetForHook(0);
+    setAppliedFilters({ ...draftFilters, offset: 0 });
   }
   function handleNextPage() {
-    setOffsetForHook(offsetForHook + 10);
-    setQueryParams({ gls: inputGoals, ast: inputAssists, position: inputPosition, mp: inputMatchesPlayed, age: inputAge, prgc: inputProgressiveCarries, prgp: inputProgressivePasses, xG: inputxG, xA: inputxA, offset: offsetForHook + 10 });
+    setAppliedFilters(previous => ({ ...previous, offset: previous.offset + 10 }));
   }
   function handlePreviousPage() {
-    setOffsetForHook(offsetForHook - 10);
-    setQueryParams({ gls: inputGoals, ast: inputAssists, position: inputPosition, mp: inputMatchesPlayed, age: inputAge, prgc: inputProgressiveCarries, prgp: inputProgressivePasses, xG: inputxG, xA: inputxA, offset: offsetForHook - 10 })
+    setAppliedFilters(previous => ({ ...previous, offset: Math.max(0, previous.offset - 10) }));
   }
   return (
     <>
@@ -51,52 +40,52 @@ export default function AdvancedPlayerList() {
           <Stack direction="row" sx={{ display: 'flex', justifyContent: 'center', flexWrap: "wrap", alignItems: 'center', borderRadius: "20px", mb: 2, p: 2, gap: 2 }} spacing={2}>
             <TextField slotProps={{ input: { style: { borderRadius: "20px" } } }}
               label="Goals"
-              value={inputGoals}
-              onChange={(e) => setInputGoals(Number(e.target.value))}
+              value={draftFilters.gls}
+              onChange={(e) => setDraftFilters(previous => ({ ...previous, gls: Number(e.target.value) }))}
             />
             <TextField slotProps={{ input: { style: { borderRadius: "20px" } } }}
               label="Assists"
-              value={inputAssists}
-              onChange={(e) => setInputAssists(Number(e.target.value))}
+              value={draftFilters.ast}
+              onChange={(e) => setDraftFilters(previous => ({ ...previous, ast: Number(e.target.value) }))}
             />
             <TextField slotProps={{ input: { style: { borderRadius: "20px" } } }}
               label="matches"
-              value={inputMatchesPlayed}
-              onChange={(e) => setInputMatchesPlayed(Number(e.target.value))}
+              value={draftFilters.mp}
+              onChange={(e) => setDraftFilters(previous => ({ ...previous, mp: Number(e.target.value) }))}
             />
             <TextField slotProps={{ input: { style: { borderRadius: "20px" } } }}
               label="Age"
-              value={inputAge}
-              onChange={(e) => setInputAge(Number(e.target.value))}
+              value={draftFilters.age}
+              onChange={(e) => setDraftFilters(previous => ({ ...previous, age: Number(e.target.value) }))}
             />
             <TextField slotProps={{ input: { style: { borderRadius: "20px" } } }}
               label="Progressive Carries"
-              value={inputProgressiveCarries}
-              onChange={(e) => setInputProgressiveCarries(Number(e.target.value))}
+              value={draftFilters.prgc}
+              onChange={(e) => setDraftFilters(previous => ({ ...previous, prgc: Number(e.target.value) }))}
             />
             <TextField slotProps={{ input: { style: { borderRadius: "20px" } } }}
               label="Progressive Passes"
-              value={inputProgressivePasses}
-              onChange={(e) => setInputProgressivePasses(Number(e.target.value))}
+              value={draftFilters.prgp}
+              onChange={(e) => setDraftFilters(previous => ({ ...previous, prgp: Number(e.target.value) }))}
             />
             <TextField slotProps={{ input: { style: { borderRadius: "20px" } } }}
               inputProps={{ step: 0.1 }}
               label="xG"
               type="number"
-              value={inputxG}
-              onChange={(e) => setInputxG(Number(e.target.value))} />
+              value={draftFilters.xG}
+              onChange={(e) => setDraftFilters(previous => ({ ...previous, xG: Number(e.target.value) }))} />
 
             <TextField slotProps={{ input: { style: { borderRadius: "20px" } } }}
               inputProps={{ step: 0.1 }}
               label="xA"
               type="number"
-              value={inputxA}
-              onChange={(e) => setInputxA(Number(e.target.value))}
+              value={draftFilters.xA}
+              onChange={(e) => setDraftFilters(previous => ({ ...previous, xA: Number(e.target.value) }))}
             />
             <FormControl sx={{ minWidth: 140 }}>
               <InputLabel id="positionLabel">Position</InputLabel>
 
-              <Select sx={{ borderRadius: "20px" }} labelId="positionLabel" value={inputPosition} label="Position" onChange={(e) => setInputPosition(e.target.value)}>
+              <Select sx={{ borderRadius: "20px" }} labelId="positionLabel" value={draftFilters.position} label="Position" onChange={(e) => setDraftFilters(previous => ({ ...previous, position: e.target.value }))}>
                 <MenuItem value="ANY">Any</MenuItem>
                 <MenuItem value="FW">Forward</MenuItem>
                 <MenuItem value="MF">Midfielder</MenuItem>
@@ -110,7 +99,7 @@ export default function AdvancedPlayerList() {
       </Stack>
 
       {isLoading ? (
-        <Box sx={{ height: "653.667px", backgroundColor: "#1e1e1e", borderRadius: "20px" }} />
+        <Box sx={{ height: "653.667px", backgroundColor: "background.paper", borderRadius: "20px" }} />
       ) : (
         <>
           {error && (
