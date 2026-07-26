@@ -47,7 +47,7 @@ export default function PlayerList() {
         </Button>
       </Stack>
     </form>
-    <Box sx={{ height: "653.667px", borderRadius: "20px" }}></Box>
+    <Box sx={{ height: "800px", borderRadius: "20px" }}></Box>
   </>;
 
   return (
@@ -72,7 +72,7 @@ export default function PlayerList() {
         </Alert>
       )}
       <TableContainer component={Paper} sx={{ borderRadius: "10px" }}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <Table sx={{ minWidth: 650, minHeight: "800px" }} aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell>Player</TableCell>

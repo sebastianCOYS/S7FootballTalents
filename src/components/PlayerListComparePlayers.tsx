@@ -96,11 +96,11 @@ export default function ComparePlayers() {
     </Box>
 
     {/* to match the height of the table when its filled in.(illusion) */}
-    <Box sx={{ height: "653.667px", borderRadius: "20px" }}>
+    <Box sx={{ height: "900px", borderRadius: "20px" }}>
     </Box>
   </>;
   return (<>
-    <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
+    <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, justifyContent: "center" }}>
       <form onSubmit={handleSubmitX}>
         <Stack direction="row" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "10px", mb: 2, p: 2 }} spacing={2}>
           <TextField
@@ -109,7 +109,7 @@ export default function ComparePlayers() {
             value={draftFiltersX.player}
             onChange={(e) => setDraftFiltersX(previous => ({ ...previous, player: e.target.value }))}
           />
-          <Button sx={{ borderRadius: "20px" }} type="submit" variant="contained">
+          <Button sx={{ borderRadius: "20px", fontSize: { xs: "0.75rem", sm: "1.25rem" } }} type="submit" variant="contained">
             Search
           </Button>
         </Stack>
@@ -123,7 +123,7 @@ export default function ComparePlayers() {
             value={draftFiltersY.player}
             onChange={(e) => setDraftFiltersY(previous => ({ ...previous, player: e.target.value }))}
           />
-          <Button sx={{ borderRadius: "20px" }} type="submit" variant="contained">
+          <Button sx={{ borderRadius: "20px", fontSize: { xs: "0.75rem", sm: "1.25rem" } }} type="submit" variant="contained">
             Search
           </Button>
         </Stack>
@@ -140,7 +140,7 @@ export default function ComparePlayers() {
       </Alert>
     )}
     <TableContainer sx={{ borderRadius: "10px", display: "flex", flexDirection: "row", gap: 12 }} component={Paper}>
-      <Table sx={{ minWidth: 150 }} aria-label="simple table">
+      <Table sx={{ minWidth: 150, height: "900px" }} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell>Player</TableCell>
@@ -188,7 +188,7 @@ export default function ComparePlayers() {
         <Typography variant={"h6"}>{selectedPlayerYName}</Typography>
         {
           selectedPlayerXRk !== null && selectedPlayerYRk !== null &&
-          <Button color='warning' component={Link} to={"/player_comparison/" + selectedPlayerXRk + "/" + selectedPlayerYRk}>Compare Players</Button>
+          <Button variant="outlined" sx={{ borderRadis: "20px", mt: 2, border: "3px solid" }} component={Link} to={"/player_comparison/" + selectedPlayerXRk + "/" + selectedPlayerYRk}>Compare Players</Button>
         }
       </Box>
       <Table sx={{ minWidth: 150 }} aria-label="simple table">

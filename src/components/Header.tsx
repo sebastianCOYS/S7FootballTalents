@@ -42,12 +42,19 @@ export default function Header({ navItems }: HeaderProps) {
   return (
     <AppBar position="static" sx={{ py: 2, px: { xs: 1, md: 2 } }}>
       <Container maxWidth="xl" disableGutters>
-        <Toolbar disableGutters>
-          <MenuItem component={Link} to={"/"} sx={{ textDecoration: "none", borderRadius: "20px" }}>
+        <Toolbar
+          disableGutters
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "minmax(0, 1fr) auto minmax(0, 1fr)",
+            alignItems: "center",
+          }}
+        >
+          <MenuItem component={Link} to={"/"} sx={{ justifySelf: "start", textDecoration: "none", borderRadius: "20px" }}>
             <Typography sx={{ fontSize: "2rem" }}><strong>S7</strong></Typography>
           </MenuItem>
 
-          <Box sx={{ flexGrow: 1, md: "none", display: "flex", justifyContent: "center" }}>
+          <Box sx={{ display: { xs: "flex", md: "none" }, justifyContent: "center" }}>
 
             <Menu
               id="menu-appbar"
@@ -72,24 +79,18 @@ export default function Header({ navItems }: HeaderProps) {
 
               ))}
             </Menu>
+            <IconButton
+              aria-label="Open navigation menu"
+              aria-controls={anchorElNav ? "menu-appbar" : undefined}
+              aria-expanded={anchorElNav ? "true" : undefined}
+              aria-haspopup="true"
+              onClick={handleOpenNavMenu}
+              sx={{ color: "text.primary" }}
+            >
+              <MenuIcon sx={{ height: 50, width: 50 }} />
+            </IconButton>
           </Box>
-          <IconButton
-            aria-label="Open navigation menu"
-            aria-controls={anchorElNav ? "menu-appbar" : undefined}
-            aria-expanded={anchorElNav ? "true" : undefined}
-            aria-haspopup="true"
-            onClick={handleOpenNavMenu}
-            sx={{
-              mr: 2,
-              display: { xs: "flex", md: "none" },
-              flexGrow: 1,
-              justifyContent: "flex-start",
-              color: "text.primary",
-            }}
-          >
-            <MenuIcon sx={{ height: 50, width: 50 }} />
-          </IconButton>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+          <Box sx={{ display: { xs: "none", md: "flex" }, justifyContent: "center" }}>
             {navItems.map(({ page, link }) => (
               <Button
                 component={Link}
@@ -105,7 +106,7 @@ export default function Header({ navItems }: HeaderProps) {
               </Button>
             ))}
           </Box>
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{ justifySelf: "end" }}>
             <Button variant="outlined" sx={{ color: "text.primary", p: 2, backgroundColor: "background.paper", borderRadius: "20px", border: "3px solid", borderColor: "primary.main" }} onClick={colorMode.toggleColorMode}>
               <DarkModeIcon />
             </Button>

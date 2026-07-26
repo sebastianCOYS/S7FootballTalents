@@ -39,6 +39,12 @@ const aiLimiter = rateLimit({
     });
   }
 });
+const playerLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000, limit: 200, standardHeaders: true, legacyHeaders: false,
+  handler: (_req, res) => {
+    res.status(429).json({ error: { code: "RATE_LIMIT_EXCEEDED", message: "You have reached your request limit, try again later.", details: { retryAfterSeconds: 60 } } });
+  }
+});
 //because of cors allow origin problem (Adds headers: Access-Control-Allow-Origin: *)
 app.use(cors({ origin: process.env.FRONTEND_URL }));
 //root route (tells us what shows up in the root of the site)
@@ -59,6 +65,7 @@ app.get(API_BASE + '/', (req, res) => {
 });
 
 //player collection and detail routes
+app.use(API_BASE + '/players', playerLimiter);
 app.use(API_BASE + '/players', advancedSearchRoutes);
 app.use(API_BASE + '/players', playerRoutes);
 app.use(API_BASE + '/ai', aiLimiter);

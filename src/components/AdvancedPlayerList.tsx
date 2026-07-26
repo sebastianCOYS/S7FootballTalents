@@ -99,7 +99,7 @@ export default function AdvancedPlayerList() {
       </Stack>
 
       {isLoading ? (
-        <Box sx={{ height: "653.667px", backgroundColor: "background.paper", borderRadius: "20px" }} />
+        <Box sx={{ height: "800px", backgroundColor: "background.paper", borderRadius: "20px" }} />
       ) : (
         <>
           {error && (
@@ -109,7 +109,7 @@ export default function AdvancedPlayerList() {
           )}
 
           <TableContainer sx={{ borderRadius: "20px" }} component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <Table sx={{ minWidth: 650, minHeight: "800px !important" }} aria-label="simple table">
               <TableHead>
                 <TableRow>
                   <TableCell>Player</TableCell>

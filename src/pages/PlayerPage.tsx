@@ -14,6 +14,16 @@ import PlayerGeneralStats from "../components/PlayerGeneralStats";
 import PlayersRadarChart from "../components/PlayersRadarChart";
 import { Divider } from "@mui/material";
 
+//https://stackoverflow.com/questions/13627308/add-st-nd-rd-and-th-ordinal-suffix-to-a-number
+function getNumberWithOrdinal(n: number): string {
+    const lastDigit = Number(String(n).replace(".", "").at(-1));
+    const suffix = lastDigit === 1 ? "st"
+        : lastDigit === 2 ? "nd"
+            : lastDigit === 3 ? "rd"
+                : "th";
+
+    return `${n}${suffix}`;
+}
 export default function PlayerPage() {
 
     const { playerRk } = useParams();
@@ -45,11 +55,11 @@ export default function PlayerPage() {
         <Box sx={{ display: "flex", my: 4, flexWrap: "wrap", justifyContent: "center" }}>
             <Typography variant="h3" sx={{ m: 2 }}>Percentiles</Typography>
             <Box sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap", gap: 2, justifyContent: "center" }}>
-                <Paper sx={{ minWidth: "200px", p: 2, borderRadius: "20px" }}><Typography color="primary.light">Goals/90</Typography><Typography>{player.gls_percentile}th</Typography></Paper>
-                <Paper sx={{ minWidth: "200px", p: 2, borderRadius: "20px" }}> <Typography color="primary.light">Assists/90</Typography><Typography>{player.ast_percentile}th</Typography></Paper>
-                <Paper sx={{ minWidth: "200px", p: 2, borderRadius: "20px" }}><Typography color="primary.light">Progressive Carries/90</Typography><Typography>{player.prgc_percentile}th</Typography></Paper>
-                <Paper sx={{ minWidth: "200px", p: 2, borderRadius: "20px" }}><Typography color="primary.light">Progressive Passes/90</Typography><Typography>{player.prgp_percentile}th</Typography></Paper>
-                <Paper sx={{ minWidth: "200px", p: 2, borderRadius: "20px" }}> <Typography color="primary.light">expected Goals/90</Typography><Typography>{player.xg_percentile}th</Typography></Paper>
+                <Paper sx={{ minWidth: "200px", p: 2, borderRadius: "20px" }}><Typography color="primary.light">Goals/90</Typography><Typography>{getNumberWithOrdinal(player.gls_percentile)}</Typography></Paper>
+                <Paper sx={{ minWidth: "200px", p: 2, borderRadius: "20px" }}> <Typography color="primary.light">Assists/90</Typography><Typography>{getNumberWithOrdinal(player.ast_percentile)}</Typography></Paper>
+                <Paper sx={{ minWidth: "200px", p: 2, borderRadius: "20px" }}><Typography color="primary.light">Progressive Carries/90</Typography><Typography>{getNumberWithOrdinal(player.prgc_percentile)}</Typography></Paper>
+                <Paper sx={{ minWidth: "200px", p: 2, borderRadius: "20px" }}><Typography color="primary.light">Progressive Passes/90</Typography><Typography>{getNumberWithOrdinal(player.prgp_percentile)}</Typography></Paper>
+                <Paper sx={{ minWidth: "200px", p: 2, borderRadius: "20px" }}> <Typography color="primary.light">expected Goals/90</Typography><Typography>{getNumberWithOrdinal(player.xg_percentile)}</Typography></Paper>
             </Box>
         </Box>
         <Stack sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap", py: 4 }}>
