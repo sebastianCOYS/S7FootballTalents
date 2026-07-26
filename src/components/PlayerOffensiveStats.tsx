@@ -20,8 +20,8 @@ export default function PlayerOffensiveStats(player: playerComplete) {
                 <Typography>{player.xA}</Typography>
             </Paper>
             <Paper sx={{ borderRadius: "20px", p: 2 }} variant="outlined" className="item">
-                <Typography color="textSecondary" className="label">ga </Typography>
-                <Typography>{player.GA}</Typography>
+                <Typography color="textSecondary" className="label">G + A</Typography>
+                <Typography>{player["G+A"]}</Typography>
             </Paper>
             <Paper sx={{ borderRadius: "20px", p: 2 }} className="item">
                 <Typography color="textSecondary" className="label">minutes </Typography>
