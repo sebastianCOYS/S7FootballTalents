@@ -17,5 +17,5 @@ MySQL
 Groq API -> Llama3.3:70b (formerly Google GenAI)
 
 Example:
-<img width="1688" height="1536" alt="Screenshot_2026-07-26_12-02-35_TVjD" src="https://github.com/user-attachments/assets/b4aa70c2-72bb-4d24-93e9-12a813c334f2" />
+<img width="1274" height="1582" alt="image" src="https://github.com/user-attachments/assets/5088c1cd-321d-4bba-8c41-19f1c2f498aa" />
 
