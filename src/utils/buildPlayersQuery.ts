@@ -1,5 +1,8 @@
+import type { CompetitionFilter } from "../types/competition";
+
 export type PlayerSearchFilters = {
     offset: number;
+    league?: CompetitionFilter;
     position?: string;
     player?: string;
     [key: string]: string | number | null | undefined;

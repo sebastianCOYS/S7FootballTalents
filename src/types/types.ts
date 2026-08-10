@@ -28,4 +28,5 @@ export type PlayerMinified = {
     Player: string;
     Age: number;
     Squad: string;
+    pos?: string;
 }

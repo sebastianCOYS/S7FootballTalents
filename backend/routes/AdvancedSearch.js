@@ -5,6 +5,13 @@ const router = express.Router();
 
 const DEFAULT_LIMIT = 10;
 const MAX_LIMIT = 100;
+const supportedCompetitions = new Set([
+    "es La Liga",
+    "it Serie A",
+    "eng Premier League",
+    "fr Ligue 1",
+    "de Bundesliga",
+]);
 
 const validColumnsMap = {
     age: "age", mp: "mp", xg: "xG", xa: "xA", gls: "gls", ast: "ast",
@@ -141,6 +148,10 @@ router.get('/', async (req, res, next) => {
 
                 if (trimmedValue.length > 100) {
                     return next(createHttpError(400, "INVALID_PARAMETER", `${rawParameter} must be 100 characters or fewer`, { parameter: rawParameter }));
+                }
+
+                if (field === "league" && !supportedCompetitions.has(trimmedValue)) {
+                    return next(createHttpError(400, "INVALID_PARAMETER", `${rawParameter} must be a supported competition`, { parameter: rawParameter }));
                 }
 
                 if (field === "player") {

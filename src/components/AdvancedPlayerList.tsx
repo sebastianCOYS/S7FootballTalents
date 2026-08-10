@@ -1,162 +1,32 @@
-import React, { useState } from 'react';
-//hooks
-import usePlayers from '../hooks/usePlayers';
-import { Alert, Box } from '@mui/material';
-//mui table
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
-import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
-//Router
-import { Link } from 'react-router';
+import type { ReactElement } from "react";
+import { Alert, Box, Paper, TableContainer } from "@mui/material";
+import usePlayerSearch from "../hooks/usePlayerSearch";
+import AdvancedPlayerSearchForm from "./AdvancedPlayerSearchForm";
+import type { AdvancedPlayerFilters } from "./AdvancedPlayerSearchForm";
+import PlayerResultsList from "./PlayerResultsList";
 
+const initialFilters: AdvancedPlayerFilters = { player: "", league: "", gls: 0, ast: 0, offset: 0, position: "ANY", mp: 0, age: 0, prgc: 0, prgp: 0, xG: 0, xA: 0 };
 
-export default function AdvancedPlayerList() {
-  const [draftFilters, setDraftFilters] = useState({ gls: 0, ast: 0, offset: 0, position: "ANY", mp: 0, age: 0, prgc: 0, prgp: 0, xG: 0, xA: 0 });
-  const [appliedFilters, setAppliedFilters] = useState({ gls: 0, ast: 0, offset: 0, position: "ANY", mp: 0, age: 0, prgc: 0, prgp: 0, xG: 0, xA: 0 });
-  const { players, error, isLoading, hasPreviousPage, hasNextPage } = usePlayers(appliedFilters);
+export default function AdvancedPlayerList(): ReactElement {
+  const playerSearch = usePlayerSearch(initialFilters);
 
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setAppliedFilters({ ...draftFilters, offset: 0 });
+  if (playerSearch.isLoading) {
+    return (
+      <>
+        <AdvancedPlayerSearchForm filters={playerSearch.draftFilters} onFiltersChange={playerSearch.setDraftFilters} onSubmit={playerSearch.handleSubmit} />
+        <Box sx={{ height: "800px", backgroundColor: "background.paper", borderRadius: "20px" }} />
+      </>
+    );
   }
-  function handleNextPage() {
-    setAppliedFilters(previous => ({ ...previous, offset: previous.offset + 10 }));
-  }
-  function handlePreviousPage() {
-    setAppliedFilters(previous => ({ ...previous, offset: Math.max(0, previous.offset - 10) }));
-  }
+
   return (
     <>
-      <Stack direction="row" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: "20px", mb: 2, p: 2 }}>
-        <form onSubmit={handleSubmit}>
-          <Stack direction="row" sx={{ display: 'flex', justifyContent: 'center', flexWrap: "wrap", alignItems: 'center', borderRadius: "20px", mb: 2, p: 2, gap: 2 }} spacing={2}>
-            <TextField slotProps={{ input: { style: { borderRadius: "20px" } } }}
-              label="Goals"
-              value={draftFilters.gls}
-              onChange={(e) => setDraftFilters(previous => ({ ...previous, gls: Number(e.target.value) }))}
-            />
-            <TextField slotProps={{ input: { style: { borderRadius: "20px" } } }}
-              label="Assists"
-              value={draftFilters.ast}
-              onChange={(e) => setDraftFilters(previous => ({ ...previous, ast: Number(e.target.value) }))}
-            />
-            <TextField slotProps={{ input: { style: { borderRadius: "20px" } } }}
-              label="matches"
-              value={draftFilters.mp}
-              onChange={(e) => setDraftFilters(previous => ({ ...previous, mp: Number(e.target.value) }))}
-            />
-            <TextField slotProps={{ input: { style: { borderRadius: "20px" } } }}
-              label="Age"
-              value={draftFilters.age}
-              onChange={(e) => setDraftFilters(previous => ({ ...previous, age: Number(e.target.value) }))}
-            />
-            <TextField slotProps={{ input: { style: { borderRadius: "20px" } } }}
-              label="Progressive Carries"
-              value={draftFilters.prgc}
-              onChange={(e) => setDraftFilters(previous => ({ ...previous, prgc: Number(e.target.value) }))}
-            />
-            <TextField slotProps={{ input: { style: { borderRadius: "20px" } } }}
-              label="Progressive Passes"
-              value={draftFilters.prgp}
-              onChange={(e) => setDraftFilters(previous => ({ ...previous, prgp: Number(e.target.value) }))}
-            />
-            <TextField slotProps={{ input: { style: { borderRadius: "20px" } } }}
-              inputProps={{ step: 0.1 }}
-              label="xG"
-              type="number"
-              value={draftFilters.xG}
-              onChange={(e) => setDraftFilters(previous => ({ ...previous, xG: Number(e.target.value) }))} />
-
-            <TextField slotProps={{ input: { style: { borderRadius: "20px" } } }}
-              inputProps={{ step: 0.1 }}
-              label="xA"
-              type="number"
-              value={draftFilters.xA}
-              onChange={(e) => setDraftFilters(previous => ({ ...previous, xA: Number(e.target.value) }))}
-            />
-            <FormControl sx={{ minWidth: 140 }}>
-              <InputLabel id="positionLabel">Position</InputLabel>
-
-              <Select sx={{ borderRadius: "20px" }} labelId="positionLabel" value={draftFilters.position} label="Position" onChange={(e) => setDraftFilters(previous => ({ ...previous, position: e.target.value }))}>
-                <MenuItem value="ANY">Any</MenuItem>
-                <MenuItem value="FW">Forward</MenuItem>
-                <MenuItem value="MF">Midfielder</MenuItem>
-                <MenuItem value="DF">Defender</MenuItem>
-                <MenuItem value="GK">Goalkeeper</MenuItem>
-              </Select>
-            </FormControl>
-            <Button sx={{ borderRadius: "20px" }} type="submit" variant="contained"> Search</Button>
-          </Stack>
-        </form>
-      </Stack>
-
-      {isLoading ? (
-        <Box sx={{ height: "800px", backgroundColor: "background.paper", borderRadius: "20px" }} />
-      ) : (
-        <>
-          {error && (
-            <Alert severity="error" sx={{ mb: 2 }}>
-              Could not load players: {error}
-            </Alert>
-          )}
-
-          <TableContainer sx={{ borderRadius: "20px" }} component={Paper}>
-            <Table sx={{ minWidth: 650, minHeight: "800px !important" }} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Player</TableCell>
-                  <TableCell align="right">Age</TableCell>
-                  <TableCell align="right">squad</TableCell>
-                  <TableCell align="right">rk</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-
-                {players.map((player) => (
-
-                  <TableRow key={player.Rk} to={"/player/" + player.Rk} component={Link}>
-                    <TableCell component="th" scope="row">
-                      {player.Player}
-                    </TableCell>
-                    <TableCell align="right">{player.Age}</TableCell>
-                    <TableCell align="right">{player.Squad}</TableCell>
-                    <TableCell align="right">{player.Rk}</TableCell>
-                  </TableRow>
-
-                ))}
-
-                {!isLoading && !error && players.length === 0 && (
-                  <TableRow>
-                    <TableCell colSpan={4} align="center">
-                      No players found
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-              <TableBody>
-                <TableRow>
-                  <TableCell colSpan={4} sx={{ width: "100%" }}>
-                    <Box sx={{ display: "flex", flexDirection: "row", width: "100%", justifyContent: "space-between" }}>
-                      <Button sx={{ alignSelf: "left" }} disabled={!hasPreviousPage} onClick={handlePreviousPage}>previous page</Button>
-                      <Button sx={{ alignSelf: "right" }} disabled={!hasNextPage} onClick={handleNextPage}>next page</Button>
-                    </Box>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </>
-      )}
-
-
+      <AdvancedPlayerSearchForm filters={playerSearch.draftFilters} onFiltersChange={playerSearch.setDraftFilters} onSubmit={playerSearch.handleSubmit} />
+      {playerSearch.error !== null && <Alert severity="error" sx={{ mb: 2 }}>Could not load players: {playerSearch.error}</Alert>}
+      <TableContainer component={Paper} sx={{ borderRadius: "20px" }}>
+        <PlayerResultsList players={playerSearch.players} shouldShowEmptyState={playerSearch.error === null} behavior={{ type: "rowLink" }} shouldShowRank={true} sx={{ minWidth: 650, minHeight: "800px !important" }}
+          hasPreviousPage={playerSearch.hasPreviousPage} hasNextPage={playerSearch.hasNextPage} onPreviousPage={playerSearch.handlePreviousPage} onNextPage={playerSearch.handleNextPage} />
+      </TableContainer>
     </>
-  )
-};
+  );
+}

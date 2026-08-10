@@ -9,53 +9,37 @@ import { Box } from "@mui/material";
 import Subtitle from "../components/Subtitle.tsx";
 import PlayersRadarChart from "../components/PlayersRadarChart.tsx";
 import type { playerComplete } from "../types/playerComplete";
-import aiAnalysisShowcase from "../images/ai_analysis_showcase_1080.mp4";
-import bundesligaLogo from "../images/bundesliga.png";
-import laLigaLogo from "../images/laliga.png";
-import ligue1Logo from "../images/ligue1.png";
-import premierLeagueLogo from "../images/premierleague.png";
-import serieALogo from "../images/seriea.png";
+import { COMPETITIONS } from "../types/competition";
+import aiAnalysisShowcase from "../images/ai_analysis_showcase_1080.webm";
+import bundesligaLogo from "../images/bundesliga.webp";
+import laLigaLogo from "../images/laliga.webp";
+import ligue1Logo from "../images/ligue1.webp";
+import premierLeagueLogo from "../images/premierleague.webp";
+import serieALogo from "../images/seriea.webp";
 
 const mockPlayer1 = {
     Player: "Erling Haaland",
-    Gls: 22,
-    Goals: 22,
-    "G-PK": 19,
-    "Goals-PK": 19,
-    Ast: 3,
-    Assists: 3,
-    xG: 22.0,
-    npxG: 18.8,
-    xAG: 3.0,
-    "G+A": 25,
-    Carries: 310,
-    PrgP: 20,
-    "Progressive p.": 20,
-    PrgC: 24,
-    "Progressive c.": 24,
-    KP: 29,
-    "key passes": 29,
+    Min: 2736,
+    us_npg_per90_percentile_position: 95.3,
+    us_npxG_per90_percentile_position: 95.3,
+    us_npxG_per_shot_percentile_position: 84.4,
+    us_assists_per90_percentile_position: 27.5,
+    us_xA_per90_percentile_position: 30.8,
+    us_key_passes_per90_percentile_position: 31.8,
+    us_xGBuildup_per90_percentile_position: 23.7,
 } as unknown as playerComplete;
+
 
 const mockPlayer2 = {
     Player: "Alexander Isak",
-    Gls: 23,
-    Goals: 23,
-    "G-PK": 19,
-    "Goals-PK": 19,
-    Ast: 6,
-    Assists: 6,
-    xG: 20.3,
-    npxG: 17.2,
-    xAG: 4.3,
-    "G+A": 29,
-    Carries: 615,
-    PrgP: 88,
-    "Progressive p.": 88,
-    PrgC: 83,
-    "Progressive c.": 83,
-    KP: 41,
-    "key passes": 41,
+    Min: 2756,
+    us_npg_per90_percentile_position: 94.3,
+    us_npxG_per90_percentile_position: 91.9,
+    us_npxG_per_shot_percentile_position: 87.2,
+    us_assists_per90_percentile_position: 68.2,
+    us_xA_per90_percentile_position: 58.3,
+    us_key_passes_per90_percentile_position: 60.7,
+    us_xGBuildup_per90_percentile_position: 22.5,
 } as unknown as playerComplete;
 
 const mockInsights = [
@@ -76,6 +60,36 @@ const mockInsights = [
     }
 ];
 
+const mockPercentileColumns = ["overall", "league", "team", "position", "nation"];
+
+const mockPercentileRows = [
+    { label: "non-penalty goals/90", values: [98, 99, 91, 95, 100] },
+    { label: "non-penalty xG/90", values: [96, 97, 88, 95, 99] },
+    { label: "assists/90", values: [42, 47, 36, 28, 53] },
+    { label: "xA/90", values: [46, 51, 33, 31, 57] },
+];
+
+function getPercentileColor(percentile: number): string {
+    if (percentile >= 95) return "rgba(28, 203, 203, 0.55)";
+    if (percentile >= 85) return "rgba(28, 203, 203, 0.42)";
+    if (percentile >= 70) return "rgba(28, 203, 203, 0.30)";
+    if (percentile >= 50) return "rgba(28, 203, 203, 0.20)";
+    if (percentile >= 30) return "rgba(28, 203, 203, 0.12)";
+
+    return "rgba(28, 203, 203, 0.06)";
+}
+
+function getNumberWithOrdinal(number: number): string {
+    const lastTwoDigits = number % 100;
+
+    if (lastTwoDigits >= 11 && lastTwoDigits <= 13) return `${number}th`;
+    if (number % 10 === 1) return `${number}st`;
+    if (number % 10 === 2) return `${number}nd`;
+    if (number % 10 === 3) return `${number}rd`;
+
+    return `${number}th`;
+}
+
 const features = [
     {
         title: "Filter by stats",
@@ -83,6 +97,7 @@ const features = [
         icon: (
             <form onSubmit={(e) => e.preventDefault()}>
                 <Stack direction="row" sx={{ display: 'flex', justifyContent: 'center', flexWrap: "wrap", alignItems: 'center', borderRadius: "20px", p: 2 }} spacing={2}>
+                    <TextField slotProps={{ input: { style: { borderRadius: "20px" } } }} label="name" value={"Grealish"} size="small" sx={{ width: "90px" }} />
                     <TextField slotProps={{ input: { style: { borderRadius: "20px" } } }} label="Goals" value={1} size="small" sx={{ width: "90px" }} />
                     <TextField slotProps={{ input: { style: { borderRadius: "20px" } } }} label="Assists" value={2} size="small" sx={{ width: "90px" }} />
                     <TextField slotProps={{ input: { style: { borderRadius: "20px" } } }} label="matches" value={10} size="small" sx={{ width: "90px" }} />
@@ -96,6 +111,14 @@ const features = [
                             <MenuItem value="MF">Midfielder</MenuItem>
                             <MenuItem value="DF">Defender</MenuItem>
                             <MenuItem value="GK">Goalkeeper</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <FormControl size="small" sx={{ minWidth: 170 }}>
+                        <InputLabel id="home-competition-label">Competition</InputLabel>
+                        <Select sx={{ borderRadius: "20px" }} labelId="home-competition-label" value="eng Premier League" label="Competition">
+                            {COMPETITIONS.map((competition) => (
+                                <MenuItem key={competition.value} value={competition.value}>{competition.label}</MenuItem>
+                            ))}
                         </Select>
                     </FormControl>
                     <Button sx={{ borderRadius: "20px" }} type="submit" variant="contained" size="small">Search</Button>
@@ -131,15 +154,39 @@ const features = [
     },
     {
         title: "Percentile rankings",
-        description: "Goals, assists, xG, progressive carries and passes ranked against all players.",
+        description: "See how a player ranks overall and against league, team, position, and nation peers.",
         icon: (
-            <Box sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap", gap: 2 }}>
-                <Paper sx={{ flex: "1 1 110px", p: 2, borderRadius: "20px" }}><Typography color="primary.light" variant="body2">Goals/90</Typography><Typography variant="h6">51.6th</Typography></Paper>
-                <Paper sx={{ flex: "1 1 110px", p: 2, borderRadius: "20px" }}><Typography color="primary.light" variant="body2">Assists/90</Typography><Typography variant="h6">53.4th</Typography></Paper>
-                <Paper sx={{ flex: "1 1 110px", p: 2, borderRadius: "20px" }}><Typography color="primary.light" variant="body2">Progressive Carries/90</Typography><Typography variant="h6">43.6th</Typography></Paper>
-                <Paper sx={{ flex: "1 1 110px", p: 2, borderRadius: "20px" }}><Typography color="primary.light" variant="body2">Progressive Passes/90</Typography><Typography variant="h6">96.9th</Typography></Paper>
-                <Paper sx={{ flex: "1 1 110px", p: 2, borderRadius: "20px" }}><Typography color="primary.light" variant="body2">expected Goals/90</Typography><Typography variant="h6">21.7th</Typography></Paper>
-            </Box>
+            <Paper sx={{ width: "100%", borderRadius: "20px", overflowX: "auto" }}>
+                <table aria-label="Example player percentile rankings" style={{ width: "100%", minWidth: "560px", borderCollapse: "collapse" }}>
+                    <thead>
+                        <tr>
+                            <th style={{ padding: "12px", textAlign: "left" }}>2024/2025</th>
+                            {mockPercentileColumns.map((column) => (
+                                <th key={column} style={{ padding: "12px 8px", textAlign: "center" }}>{column}</th>
+                            ))}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {mockPercentileRows.map((row) => (
+                            <tr key={row.label}>
+                                <th style={{ padding: "12px", textAlign: "left", whiteSpace: "nowrap" }}>{row.label}</th>
+                                {row.values.map((value, index) => (
+                                    <td
+                                        key={mockPercentileColumns[index]}
+                                        style={{
+                                            padding: "12px 8px",
+                                            textAlign: "center",
+                                            backgroundColor: getPercentileColor(value),
+                                        }}
+                                    >
+                                        {getNumberWithOrdinal(value)}
+                                    </td>
+                                ))}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </Paper>
         )
     },
     {
@@ -149,7 +196,7 @@ const features = [
             <Paper sx={{ borderRadius: "20px", p: 4 }} variant="outlined">
                 <Typography variant="h6">preferred role:</Typography>
                 <Chip color="secondary" variant="outlined" label="High-Volume Scoring Link" sx={{ my: 2 }} />
-                <Typography variant="h6" sx={{ mt: 2 }}>preferred system:</Typography>
+                <Typography variant="h6" sx={{ mt: 2 }}>tactical fit:</Typography>
                 <Chip sx={{ height: "auto", mt: 2, "& .MuiChip-label": { whiteSpace: "normal" } }} color="secondary" label="Functions as a deep-dropping striker who balances high-volume penalty area presence with creative distribution in the middle third." />
             </Paper>
         )
@@ -170,7 +217,6 @@ export default function Home() {
 
             <Box sx={{ display: "flex", gap: { xs: 0, sm: 4 }, flexDirection: { xs: "column", sm: "row" } }}>
                 <Button sx={{ width: "100%", p: 4, mt: 2, borderRadius: "20px", border: "solid 5px" }} variant="outlined" component={Link} to={"/advanced_search"}><Typography sx={{ color: "text.primary", fontWeight: "bold" }}>Advanced Search</Typography></Button> <br />
-                <Button sx={{ width: "100%", p: 4, mt: 2, borderRadius: "20px", border: "solid 5px" }} variant="outlined" component={Link} to={"/name_search"}><Typography sx={{ color: "text.primary", fontWeight: "bold" }}>Search by name</Typography></Button> <br />
                 <Button sx={{ width: "100%", p: 4, mt: 2, borderRadius: "20px", border: "solid 5px" }} variant="outlined" component={Link} to={"/compare_players"}><Typography sx={{ color: "text.primary", fontWeight: "bold" }}>Compare players</Typography></Button> <br />
             </Box>
             <Typography sx={{ mt: 12, mb: 4 }} variant={"h2"}>Features</Typography>
@@ -183,16 +229,16 @@ export default function Home() {
                     <Box sx={{ width: "15px", height: "15px", borderRadius: "100px", backgroundColor: "#f5bc3e" }}></Box>
                     <Box sx={{ width: "15px", height: "15px", borderRadius: "100px", backgroundColor: "#64cc42" }}></Box>
                 </Paper>
-                <Box component="video" src={aiAnalysisShowcase} autoPlay muted loop sx={{ borderBottomLeftRadius: "20px", borderBottomRightRadius: "20px", border: "solid 10px", borderColor: "background.paper", borderTop: "0" }}></Box>
+                <Box component="video" src={aiAnalysisShowcase} autoPlay muted loop sx={{ borderBottomLeftRadius: "20px", width: "100%", height: "auto", borderBottomRightRadius: "20px", border: "solid 10px", borderColor: "background.paper", borderTop: "0" }}></Box>
             </Box>
 
             <Typography sx={{ mt: 12, mb: 4, maxWidth: "800px" }} variant={"h2"}>Featuring players from <strong>all 5 biggest leagues</strong></Typography>
             <Box sx={{ display: "flex", flexDirection: "row", gap: 4, alignItems: "center", justifyContent: "center", py: 4, flexWrap: "wrap" }}>
-                <Paper sx={{ display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "20px", width: { xs: "100%", sm: "30%" }, height: "200px" }}><img width={"150px"} src={premierLeagueLogo} alt="Premier League" /></Paper>
-                <Paper sx={{ display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "20px", width: { xs: "100%", sm: "30%" }, height: "200px" }}><img width={"100px"} src={laLigaLogo} alt="La Liga" /></Paper>
-                <Paper sx={{ display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "20px", width: { xs: "100%", sm: "30%" }, height: "200px" }}><img width={"100px"} src={ligue1Logo} alt="Ligue 1" /></Paper>
-                <Paper sx={{ display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "20px", width: { xs: "100%", sm: "30%" }, height: "200px" }}><img width={"150px"} src={serieALogo} alt="Serie A" /></Paper>
-                <Paper sx={{ display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "20px", width: { xs: "100%", sm: "30%" }, height: "200px" }}><img width={"100px"} src={bundesligaLogo} alt="Bundesliga" /></Paper>
+                <Paper sx={{ display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "20px", width: { xs: "100%", sm: "30%" }, height: "200px" }}><img width={"150px"} loading="lazy" src={premierLeagueLogo} alt="Premier League" /></Paper>
+                <Paper sx={{ display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "20px", width: { xs: "100%", sm: "30%" }, height: "200px" }}><img width={"100px"} loading="lazy" src={laLigaLogo} alt="La Liga" /></Paper>
+                <Paper sx={{ display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "20px", width: { xs: "100%", sm: "30%" }, height: "200px" }}><img width={"100px"} loading="lazy" src={ligue1Logo} alt="Ligue 1" /></Paper>
+                <Paper sx={{ display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "20px", width: { xs: "100%", sm: "30%" }, height: "200px" }}><img width={"150px"} loading="lazy" src={serieALogo} alt="Serie A" /></Paper>
+                <Paper sx={{ display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "20px", width: { xs: "100%", sm: "30%" }, height: "200px" }}><img width={"100px"} loading="lazy" src={bundesligaLogo} alt="Bundesliga" /></Paper>
             </Box>
             <Button variant="outlined" sx={{ width: "100%", mt: 6, p: 4, borderRadius: "20px", border: "solid 5px" }} component={Link} to={"/advanced_search"}>Start scouting NOW</Button >
         </>

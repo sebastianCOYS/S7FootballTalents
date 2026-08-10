@@ -1,6 +1,7 @@
 //this file handles fetching players from API with optional query parameters
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import type { PlayerMinified } from "../types/types";
+import type { CompetitionFilter } from "../types/competition";
 import { buildPlayersQuery } from "../utils/buildPlayersQuery";
 
 //accepts optional parameters given from PlayerList component
@@ -14,6 +15,7 @@ type usePlayersProps = {
     prgp?: number | string;
     xA?: number | string;
     xG?: number | string;
+    league?: CompetitionFilter;
     position?: string;
     //for name_search_page
     player?: string;
@@ -50,10 +52,12 @@ async function fetchPlayers(params: usePlayersProps): Promise<PlayersResponse> {
 
 //returns a json with players and loading state
 export default function usePlayers(params: usePlayersProps) {
-    const { age, mp, gls, ast, prgc, prgp, xA, xG, player, position, offset } = params;
+    const { age, mp, gls, ast, prgc, prgp, xA, xG, league, player, position, offset } = params;
     const { data, error, isLoading } = useQuery({
-        queryKey: ["players", { age, mp, gls, ast, prgc, prgp, xA, xG, player, position, offset }],
+        queryKey: ["players", { age, mp, gls, ast, prgc, prgp, xA, xG, league, player, position, offset }],
         queryFn: () => fetchPlayers(params),
+        // to fix results blinking on next page click...
+        placeholderData: keepPreviousData,
     });
 
     return {

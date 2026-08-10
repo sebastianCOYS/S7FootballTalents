@@ -1,86 +1,69 @@
 // @vitest-environment jsdom
 import { cleanup, render, screen } from "@testing-library/react";
-import { afterEach, describe, expect, it, vi } from "vitest";
-import type { playerComplete } from "../types/playerComplete";
+import { afterEach, describe, expect, it } from "vitest";
 import PlayerGoalkeepingStats from "./PlayerGoalkeepingStats";
-import PlayersRadarChart from "./PlayersRadarChart";
-
-vi.mock("@mui/x-charts", () => ({
-    RadarChart: (props: Record<string, unknown>) => (
-        <div data-testid="radar-props">{JSON.stringify(props)}</div>
-    ),
-}));
+import { getGoalkeeperRadarConfig, getOffensiveRadarConfig } from "../utils/radarConfig";
 
 afterEach(cleanup);
 
-const player = {
-    Player: "Test Player",
-    Pos: "GK",
-    Gls: 1,
-    "G-PK": 2,
-    Ast: 3,
-    xG: 4,
-    npxG: 5,
-    xAG: 6,
-    "G+A": 7,
-    Carries: 8,
-    PrgP: 9,
-    PrgC: 10,
-    KP: 11,
-    Fld: 98,
-    Fld_stats_misc: 12,
-    Crs: 13,
-    GA: 1,
-    GA90: 2,
-    Saves: 3,
-    "Save%": 4,
-    CK: 99,
-    CS: 5,
-    PKsv: 6,
-    Cmp: 474,
-    "Cmp%": 76.6,
-    "PSxG+/-": 0,
-    Clr: 0,
-    Err: 0,
-    AvgLen: 0,
-    Thr: 0,
-    "Launch%": 0,
-} as unknown as playerComplete;
-
-function renderedRadarProps() {
-    return JSON.parse(screen.getByTestId("radar-props").textContent ?? "{}");
-}
-
 describe("analytics field mappings", () => {
-    it("keeps offensive radar labels aligned with their values", () => {
-        render(<PlayersRadarChart players={[player]} chartType="offensive" />);
+    it("keeps offensive percentile labels aligned with their source fields", () => {
+        const config = getOffensiveRadarConfig({
+            us_npg_per90_percentile_position: 11,
+            us_npxG_per90_percentile_position: 22,
+            us_npxG_per_shot_percentile_position: 33,
+            us_assists_per90_percentile_position: 44,
+            us_xA_per90_percentile_position: 55,
+            us_key_passes_per90_percentile_position: 66,
+            us_xGBuildup_per90_percentile_position: 77,
+        }, true);
 
-        const props = renderedRadarProps();
-        expect(props.series[0].data).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
-        expect(props.radar.metrics).toEqual([
-            "Goals",
-            "Goals-PK",
-            "Assists",
-            "xG",
-            "npxG",
-            "xAG",
-            "G+A",
-            "Carries",
-            "Progressive p.",
-            "Progressive c.",
-            "key passes",
-        ]);
+        expect(config.metrics).toEqual(["NPG/90", "npxG/90", "npxG/shot", "Assists/90", "xA/90", "Key passes/90", "xG buildup/90"]);
+        expect(config.data).toEqual([11, 22, 33, 44, 55, 66, 77]);
     });
 
-    it("uses clean sheets instead of corner kicks in goalkeeper radars", () => {
-        render(<PlayersRadarChart players={[player]} chartType="goalkeeping" />);
-        expect(renderedRadarProps().series[0].data[4]).toBe(5);
+    it("removes the shot-quality label and value together when it is ineligible", () => {
+        const config = getOffensiveRadarConfig({
+            us_npg_per90_percentile_position: 11,
+            us_npxG_per90_percentile_position: 22,
+            us_npxG_per_shot_percentile_position: null,
+            us_assists_per90_percentile_position: 44,
+            us_xA_per90_percentile_position: 55,
+            us_key_passes_per90_percentile_position: 66,
+            us_xGBuildup_per90_percentile_position: 77,
+        }, false);
+
+        expect(config.metrics).toEqual(["NPG/90", "npxG/90", "Assists/90", "xA/90", "Key passes/90", "xG buildup/90"]);
+        expect(config.data).toEqual([11, 22, 44, 55, 66, 77]);
+    });
+
+    it("keeps goalkeeper radar labels aligned with their source fields", () => {
+        const config = getGoalkeeperRadarConfig({
+            "Save%": 61,
+            "/90": 0.12,
+            "Cmp%_stats_keeper_adv": 43,
+            "Launch%": 54,
+            "Stp%": 15,
+            "#OPA/90": 1.4,
+        });
+
+        expect(config.metrics.map((metric) => metric.name)).toEqual(["Save %", "PSxG +/-/90", "Long pass cmp. %", "Launch %", "Cross stop %", "OPA/90"]);
+        expect(config.data).toEqual([61, 0.12, 43, 54, 15, 1.4]);
     });
 
     it("displays goalkeeper pass completion percentage", () => {
+        const player = {
+            Pos: "GK",
+            GA90: 1.1,
+            "Save%": 72,
+            CS: 8,
+            Err: 1,
+            "Cmp%": 76.6,
+            AvgLen: 37.2,
+        } satisfies Parameters<typeof PlayerGoalkeepingStats>[0];
+
         render(<PlayerGoalkeepingStats {...player} />);
 
         expect(screen.getByText("76.6%")).toBeTruthy();
-        expect(screen.queryByText("474%")).toBeNull();
     });
 });

@@ -8,7 +8,6 @@ import { ColorModeContext } from "./contexts/ColorModeContext";
 import AdvancedSearch from "./pages/AdvancedSearch.tsx";
 import ComparePlayers from "./pages/ComparePlayers.tsx";
 import Home from "./pages/Home.tsx";
-import NameSearch from "./pages/NameSearch.tsx";
 import NotFoundPage from "./pages/NotFoundPage.tsx";
 import PlayerComparisonPage from "./pages/PlayerComparisonPage.tsx";
 import PlayerPage from "./pages/PlayerPage.tsx";
@@ -22,7 +21,6 @@ const router = createBrowserRouter([
     children: [
       { path: "/", element: <Home /> },
       { path: "/home", element: <Home /> },
-      { path: "/name_search", element: <NameSearch /> },
       { path: "/advanced_search", element: <AdvancedSearch /> },
       { path: "/compare_players", element: <ComparePlayers /> },
       { path: "/player/:playerRk", element: <PlayerPage /> },

@@ -9,7 +9,7 @@ describe("buildPlayersQuery", () => {
     });
 
     it("accepts all filters", () => {
-        const query = buildPlayersQuery({ offset: 2, age: 2, mp: 2, gls: 2, ast: 2, prgc: 2, prgp: 2, xA: 1.1, xG: 1.1, position: "DF", player: "max" })
+        const query = buildPlayersQuery({ offset: 2, age: 2, mp: 2, gls: 2, ast: 2, prgc: 2, prgp: 2, xA: 1.1, xG: 1.1, league: "eng Premier League", position: "DF", player: "max" })
 
         //this way the test doesn't rely on parameter order...
         const parameters = new URLSearchParams(query);
@@ -22,6 +22,7 @@ describe("buildPlayersQuery", () => {
         expect(parameters.get("prgp_gte")).toBe("2");
         expect(parameters.get("xa_gte")).toBe("1.1");
         expect(parameters.get("xg_gte")).toBe("1.1");
+        expect(parameters.get("league")).toBe("eng Premier League");
         expect(parameters.get("pos")).toBe("DF");
         expect(parameters.get("player")).toBe("max");
     });
@@ -41,6 +42,13 @@ describe("buildPlayersQuery", () => {
         const query = buildPlayersQuery({ offset: 0, player: "" });
         const parameters = new URLSearchParams(query);
         expect(parameters.has("player")).toBe(false);
+    });
+
+    it("excludes an empty competition filter", () => {
+        const query = buildPlayersQuery({ offset: 0, league: "" });
+        const parameters = new URLSearchParams(query);
+
+        expect(parameters.has("league")).toBe(false);
     });
 
 });

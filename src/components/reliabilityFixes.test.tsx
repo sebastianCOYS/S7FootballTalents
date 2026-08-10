@@ -5,7 +5,6 @@ import { MemoryRouter, useLocation } from "react-router";
 import Header from "./Header";
 import AdvancedPlayerList from "./AdvancedPlayerList";
 import ComparePlayerLists from "./PlayerListComparePlayers";
-import NamePlayerList from "./PlayerListSearchName";
 
 const mockedUsePlayers = vi.hoisted(() => vi.fn());
 
@@ -49,7 +48,6 @@ describe("frontend reliability states", () => {
 
   it.each([
     ["advanced player list", <AdvancedPlayerList />],
-    ["name player list", <NamePlayerList />],
   ])("shows an API error instead of an empty result for the %s", (_name, component) => {
     render(<MemoryRouter>{component}</MemoryRouter>);
 

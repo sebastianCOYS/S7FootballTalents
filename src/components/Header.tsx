@@ -13,7 +13,9 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuItem from "@mui/material/MenuItem";
 import { ColorModeContext } from "../contexts/ColorModeContext";
-import DarkModeIcon from '@mui/icons-material/DarkMode';
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from '@mui/icons-material/LightMode';
+import { useTheme } from "@mui/material/styles";
 
 type NavItem = {
   page: string;
@@ -22,9 +24,15 @@ type NavItem = {
 type HeaderProps = {
   navItems: NavItem[];
 }
+
+
+
 export default function Header({ navItems }: HeaderProps) {
   const colorMode = useContext(ColorModeContext);
+  const theme = useTheme();
 
+  const mode = theme.palette.mode;
+  const isDarkMode = mode === "dark";
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -108,7 +116,7 @@ export default function Header({ navItems }: HeaderProps) {
           </Box>
           <Box sx={{ justifySelf: "end" }}>
             <Button variant="outlined" sx={{ color: "text.primary", p: 2, backgroundColor: "background.paper", borderRadius: "20px", border: "3px solid", borderColor: "primary.main" }} onClick={colorMode.toggleColorMode}>
-              <DarkModeIcon />
+              {isDarkMode ? <DarkModeIcon /> : <LightModeIcon />}
             </Button>
           </Box>
         </Toolbar>

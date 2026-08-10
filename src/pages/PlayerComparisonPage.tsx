@@ -4,8 +4,6 @@ import { Typography, Paper, Box } from "@mui/material";
 import useAiComparison from "../hooks/useAiComparison";
 import { Button } from "@mui/material";
 import PlayerGeneralStats from "../components/PlayerGeneralStats";
-import PlayerOffensiveStats from "../components/PlayerOffensiveStats";
-import PlayerDefensiveStats from "../components/PlayerDefensiveStats";
 import PlayerGoalkeepingStats from "../components/PlayerGoalkeepingStats";
 import { Alert } from "@mui/material";
 import { CircularProgress } from "@mui/material";
@@ -34,20 +32,16 @@ export default function PlayerComparisonPage() {
                 <PlayersRadarChart players={[playerX, playerY]} chartType="defensive" />
                 {playerX.Pos === "GK" && <PlayersRadarChart players={[playerX, playerY]} chartType="goalkeeping" />}
             </Stack>
-            <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "column", md: "row" }, gap: 4, p: 4 }}>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 4, p: { xs: 1, sm: 4 } }}>
 
                 <Box sx={{ width: "100%" }}>
                     <PlayerGeneralStats player={playerX} />
                     <PlayerGoalkeepingStats {...playerX} />
-                    <PlayerOffensiveStats {...playerX} />
-                    <PlayerDefensiveStats {...playerX} />
                 </Box>
 
                 <Box sx={{ width: "100%" }}>
                     <PlayerGeneralStats player={playerY} />
-                    <PlayerGoalkeepingStats {...playerY} />
-                    <PlayerOffensiveStats {...playerY} />
-                    <PlayerDefensiveStats {...playerY} />
+                    <PlayerGoalkeepingStats {...playerX} />
                 </Box>
             </Box>
         </>
